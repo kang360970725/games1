@@ -243,8 +243,8 @@ export default {
       if (_this.buykeyNumber < 0 || isNaN(parseInt(_this.buykeyNumber))) {
         _this.$modal('买入数量不合法')
       }*/
-      let keys = new _this.context.BigNumber(_this.buykeyNumber)
-      keys = keys.mul(_this.context.fp3d.decimals)
+      let keys = new _this.context.BigNumber(_this.gameList[_round].buyNumber)
+      keys = keys.mul(_this.context.fp3d.params.decimals)
       return _this.context.fp3d.ethForKey(keys, _round)
         .then(_value => {
           return _this.context.fp3d.buy(_round, _value, 0)
@@ -262,7 +262,7 @@ export default {
             // _this.gameList[i].unitPrice
             _this.gameList[i].surplus = _rounds[i].nextLucky.sub(_rounds[i].luckyCounter).toNumber()
             _this.gameList[i].state = _rounds[i].activated
-            _this.gameList[i].buyNumber = _rounds[i].keys.toNumber()
+            // _this.gameList[i].buyNumber = _rounds[i].keys.toNumber()
             if (_rounds[i].activated && !_rounds[i].finalized) {
               fp3d.remainTime(i)
                 .then(_time => {
@@ -272,7 +272,6 @@ export default {
 
             fp3d.ethForKey(fp3d.params.decimals, i)
               .then(_eth => {
-                console.log(_eth.toNumber())
                 _this.gameList[i].unitPrice = _eth.dividedBy(Math.pow(10, 18)).toNumber()
               })
           }

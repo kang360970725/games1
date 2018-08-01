@@ -104,7 +104,7 @@ Fp3dMod.prototype.withdrawal = function(addr) {
 
 Fp3dMod.prototype.ethForKey = function(keys, round) {
   const self = this
-  return self.c.ethForKey(keys, round)
+  return self.c.priceForKeys(keys, round)
 }
 
 Fp3dMod.prototype.finalize = function(round) {
@@ -121,7 +121,7 @@ Fp3dMod.prototype.register = function(ref) {
 
 Fp3dMod.prototype.buy = function(round, value, ref) {
   const self = this
-  return self.c.BuyKeys(ref, round)
+  return self.c.BuyKeys(ref, round, { value })
 }
 
 Fp3dMod.prototype.reload = function(round, value, ref) {
@@ -158,8 +158,31 @@ Fp3dMod.prototype.loadAllRound = function() {
   })
 }
 
-Fp3dMod.prototype.ethForKey = function(keys, i) {
-  return this.c.ethForKey(keys, i)
+Fp3dMod.prototype.loadPlayerAllRound = function(address) {
+  const self = this
+  return new Promise((r, j) => {
+    async.times(
+      self.params.maxRound.toNumber(),
+      (i, callback) => {
+        self.c.playerRoundData(address, i)
+          .then(_data => {
+            callback(null, {
+              eth: _data[0].dividedBy(Math.pow(10, 18)).toNumber(),
+              keys: _data[1].dividedBy(Math.pow(10, 18)).toNumber(),
+              mask: _data[1].toNumber()
+            })
+          })
+      },
+      (err, roundData) => {
+        if (err) {
+          console.error(`fail to load user data`, err)
+          j(err)
+        } else {
+          r(roundData)
+        }
+      }
+    )
+  })
 }
 
 function getFp3d(web3) {

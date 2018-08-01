@@ -38,5 +38,5 @@ exports.fp3d2 = {
 }
 
 exports.fp3dM = {
-  '3': '0xd956756b5bFc1aD8f5DE56D7C472BcC5A23277a0'
+  '3': '0xaccb35c43be38458813750e4a16d3093fa0fa5bd'
 }

@@ -87,7 +87,7 @@ export default {
             this._loadRounds()
             setTimeout(() => {
                 this._loadRounds()
-            }, 60 * 1000)
+            }, 10 * 1000)
         },
         _loadRounds() {
             this.context.fp3d.loadAllRound()
@@ -97,7 +97,7 @@ export default {
                         async.times(
                             _rounds.length,
                             (i, callback) => {
-                                this.context.fp3d.remainTime(i + 1)
+                                this.context.fp3d.remainTime(i)
                                     .then(_t => {
                                         _rounds[i].remainTime = _t
                                         _rounds[i].buy_keys = 1

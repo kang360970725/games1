@@ -92,6 +92,11 @@
 
 <script>
 import headers from '../components/header'
+
+const etherEnv = require('@/lib/etherEnv')
+const fp3dMod = require('@/lib/fp3d_mod')
+const async = require('async')
+
 export default {
   components: {
     headers
@@ -142,16 +147,89 @@ export default {
           bonusKey: 0, //Key分红
           bonusR: 0, //888排名分红
           bonusJ: 0 //奖池大奖分红
+        },
+        {
+          num: 5, //第几轮
+          keyNum: 0, //Key持有数
+          bonusKey: 0, //Key分红
+          bonusR: 0, //888排名分红
+          bonusJ: 0 //奖池大奖分红
+        },
+        {
+          num: 5, //第几轮
+          keyNum: 0, //Key持有数
+          bonusKey: 0, //Key分红
+          bonusR: 0, //888排名分红
+          bonusJ: 0 //奖池大奖分红
+        },
+        {
+          num: 5, //第几轮
+          keyNum: 0, //Key持有数
+          bonusKey: 0, //Key分红
+          bonusR: 0, //888排名分红
+          bonusJ: 0 //奖池大奖分红
+        },
+        {
+          num: 5, //第几轮
+          keyNum: 0, //Key持有数
+          bonusKey: 0, //Key分红
+          bonusR: 0, //888排名分红
+          bonusJ: 0 //奖池大奖分红
+        },
+        {
+          num: 5, //第几轮
+          keyNum: 0, //Key持有数
+          bonusKey: 0, //Key分红
+          bonusR: 0, //888排名分红
+          bonusJ: 0 //奖池大奖分红
+        },
+        {
+          num: 5, //第几轮
+          keyNum: 0, //Key持有数
+          bonusKey: 0, //Key分红
+          bonusR: 0, //888排名分红
+          bonusJ: 0 //奖池大奖分红
+        },
+        {
+          num: 5, //第几轮
+          keyNum: 0, //Key持有数
+          bonusKey: 0, //Key分红
+          bonusR: 0, //888排名分红
+          bonusJ: 0 //奖池大奖分红
         }
       ]
     }
   },
   mounted () {
-
+    etherEnv.Init(window.web3)
+      .then(cxt => {
+        this.context = cxt
+        return fp3dMod.getFp3d(cxt.web3)
+      })
+      .then(_fp3d => {
+        this.context.fp3d = _fp3d
+        return this.loadUserData()
+      })
+      .then(() => {
+        return this.context.fp3d.totalProfit(this.context.address)
+          .then(_profit => {
+            this.balance = _profit.dividedBy(Math.pow(10, 18)).toNumber()
+          })
+      })
   },
   methods: {
     activationLinkFn: function () { //激活邀请链接
       let _this = this
+      return _this.context.fp3d.register()
+    },
+    loadUserData() {
+      return this.context.fp3d.loadPlayerAllRound(this.context.address)
+        .then(_roundData => {
+          for(let i = 0; i < _roundData.length; i ++) {
+            this.orders[i].num = i + 1
+            this.orders[i].keyNum = _roundData[i].keys
+          }
+        })
     }
   }
 }
