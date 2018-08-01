@@ -4,6 +4,7 @@ import index from '@/view/index'
 import info from '@/view/info'
 import help from '@/view/help'
 import record from '@/view/record'
+import admin from '@/view/admin/admin'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/record',
       name: 'record',
       component: record
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: admin
     }
   ]
 })
