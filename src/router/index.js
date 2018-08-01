@@ -4,7 +4,7 @@ import index from '@/view/index'
 import info from '@/view/info'
 import help from '@/view/help'
 import record from '@/view/record'
-
+import test from '@/view/test'
 Vue.use(Router)
 
 export default new Router({
@@ -29,6 +29,11 @@ export default new Router({
       path: '/record',
       name: 'record',
       component: record
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: test
     }
   ]
 })

@@ -88,6 +88,9 @@
 
 <script>
 import headers from '../components/header'
+const etherEnv = require('@/lib/etherEnv')
+const fp3dMod = require('@/lib/fp3d_mod')
+const async = require('async')
 
 export default {
   components: {
@@ -209,45 +212,92 @@ export default {
     }
   },
   mounted () {
-    let _this = this
-    _this.initViewDataFn()
-    setInterval(function () {
-      _this.initDataTxtFn()
-    }, 1000)
+    const _this = this
+    etherEnv.Init(window.web3)
+      .then(cxt => {
+        _this.context = cxt
+        return fp3dMod.getFp3d(cxt.web3)
+      })
+      .then(_fp3d => {
+        _this.context.fp3d = _fp3d
+        _this.initViewDataFn()
+        setInterval(() => {
+          _this.initViewDataFn()
+        }, 3 * 60 * 1000)
+        setInterval(function () {
+          _this.initDataTxtFn()
+        }, 1000)
+      })
+      .catch(err => {
+        console.error(`fail`, err)
+      })
   },
   methods: {
-    buyKeysfn: function () { // 鑰匙購買
+    buyKeysfn: function (_round) { // 鑰匙購買
       let _this = this
       if (_this.time == 0) {
         _this.$modal('即将开启,敬请期待!')
         return
       }
+      /*
       if (_this.buykeyNumber < 0 || isNaN(parseInt(_this.buykeyNumber))) {
         _this.$modal('买入数量不合法')
-      }
+      }*/
+      let keys = new _this.context.BigNumber(_this.buykeyNumber)
+      keys = keys.mul(_this.context.fp3d.decimals)
+      return _this.context.fp3d.ethForKey(keys, _round)
+        .then(_value => {
+          return _this.context.fp3d.buy(_round, _value, 0)
+        })
     },
     initViewDataFn: function () {
-      let _this = this
-      for (let i in _this.gameList) {
-        _this.gameList[i].numberAnimates = $('.mobile-numbers' + i).numberAnimate({
-          num: _this.gameList[i].jackpot,
-          speed: 800,
-          symbol: ',',
-          dot: 0
+      const _this = this
+      const fp3d = _this.context.fp3d
+      return fp3d
+        .loadAllRound()
+        .then(_rounds => {
+          for(let i = 0; i < _rounds.length; i ++) {
+            _this.gameList[i].jackpot = _rounds[i].pool.dividedBy(Math.pow(10, 18)).toNumber()
+            _this.gameList[i].totalInvestment = _rounds[i].eth.dividedBy(Math.pow(10, 18)).toNumber()
+            // _this.gameList[i].unitPrice
+            _this.gameList[i].surplus = _rounds[i].nextLucky.sub(_rounds[i].luckyCounter).toNumber()
+            _this.gameList[i].state = _rounds[i].activated
+            _this.gameList[i].buyNumber = _rounds[i].keys.toNumber()
+            if (_rounds[i].activated && !_rounds[i].finalized) {
+              fp3d.remainTime(i)
+                .then(_time => {
+                  _this.gameList[i].time = _time.mul(1000).toNumber()
+                })
+            }
+
+            fp3d.ethForKey(fp3d.params.decimals, i)
+              .then(_eth => {
+                console.log(_eth.toNumber())
+                _this.gameList[i].unitPrice = _eth.dividedBy(Math.pow(10, 18)).toNumber()
+              })
+          }
+
+          for (let i in _this.gameList) {
+            _this.gameList[i].numberAnimates = $('.mobile-numbers' + i).numberAnimate({
+              num: _this.gameList[i].jackpot + '',
+              speed: 800,
+              symbol: ',',
+              dot: 0
+            })
+            _this.gameList[i].timeAnimates = $('.time-number' + i).numberAnimate({
+              num: '240000',
+              speed: 800,
+              symbol: ' : ',
+              symbolNum: '2',
+              dot: 0
+            })
+          }
         })
-        _this.gameList[i].timeAnimates = $('.time-number' + i).numberAnimate({
-          num: '240000',
-          speed: 800,
-          symbol: ' : ',
-          symbolNum: '2',
-          dot: 0
-        })
-      }
     },
     initDataTxtFn: function (state) { // 初始化时间
       let _this = this
       for (let i in _this.gameList) {
-        let time = parseInt(_this.gameList[i].time) - Date.now()
+        let time = parseInt(_this.gameList[i].time)
         if (_this.gameList[i].time <= 0 || time <= 0) {
           time = 0
         }

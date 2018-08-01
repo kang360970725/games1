@@ -27,6 +27,7 @@ function Fp3dMod(address, web3, callback) {
     'withdrawFee',
     'minimumWithdraw',
     'admin',
+    'decimals',
 
     'owner1',
     'owner2'
@@ -138,7 +139,7 @@ Fp3dMod.prototype.loadAllRound = function() {
     async.times(
       self.params.maxRound.toNumber(),
       (i, callback) => {
-        self.round(i + 1)
+        self.round(i)
           .then(round => {
             return callback(null, round)
           })
