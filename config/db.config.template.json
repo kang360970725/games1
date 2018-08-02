@@ -1,0 +1,6 @@
+{
+  "host"     : "localhost",
+  "user"     : "root",
+  "password" : null,
+  "database" : "fomo3d"
+}
