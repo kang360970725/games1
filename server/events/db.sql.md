@@ -15,12 +15,12 @@ CREATE TABLE status (
   UNIQUE (category, event)
 );
 
-| property | type |
-|---| -----|
-| id | INT |
-| category | CHAR(20) |
-| event | VARCHAR |
-| block | BIGINT |
+| property | type | extra |
+|---| -----|----|
+| id | INT | 自增主键 |
+| category | CHAR(20) | 网络(ropsten 3, mainnet 1) |
+| event | VARCHAR | 事件 |
+| block | BIGINT | 当前block |
 
 ### lucky
 
@@ -37,16 +37,16 @@ CREATE TABLE lucky (
   UNIQUE (round, category, lucky)
 );
 
-| property | type |
-|---| -----|
-| id | INT |
-| buyer | VARCHAR(80) |
-| round | INT |
-| lucky | INT |
-| amount | BIGINT |
-| category | CHAR(20) |
-| block | BIGINT |
-| tx | VARCHAR(100) |
+| property | type | extra |
+|---| -----| --- |
+| id | INT | 自增主键 |
+| buyer | VARCHAR(80) | 中奖人地址 |
+| round | INT | 轮次 (0开始) |
+| lucky | INT | 幸运数（888，1776等） |
+| amount | BIGINT | 中奖奖金 (eth * 10^18) |
+| category | CHAR(20) | 网络 |
+| block | BIGINT | block号 |
+| tx | VARCHAR(100) | 交易hash |
 
 ### referer
 
