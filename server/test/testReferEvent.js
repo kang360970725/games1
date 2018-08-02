@@ -7,5 +7,5 @@ web3.setProvider(new web3.providers.HttpProvider(`https://ropsten.infura.io/vAug
 
 utils.getFp3d(web3)
   .then(_fp3d => {
-    EventLogger(_fp3d)
+    EventLogger(_fp3d, web3)
   })

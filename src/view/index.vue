@@ -208,7 +208,9 @@ export default {
           state: true, // 是否开启
           buyNumber: '' // 购买数
         }
-      ]
+      ],
+      refId: 0,
+      selfId: 0
     }
   },
   mounted () {
@@ -263,7 +265,7 @@ export default {
       keys = keys.mul(_this.context.fp3d.params.decimals)
       return _this.context.fp3d.ethForKey(keys, _round)
         .then(_value => {
-          return _this.context.fp3d.buy(_round, _value, 0)
+          return _this.context.fp3d.buy(_round, _value, this.refId)
         })
     },
     initViewDataFn: function () {
