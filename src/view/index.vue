@@ -223,10 +223,26 @@ export default {
         _this.initViewDataFn()
         setInterval(() => {
           _this.initViewDataFn()
-        }, 4 * 60 * 1000)
+        }, 30 * 1000)
         setInterval(function () {
           _this.initDataTxtFn()
         }, 1000)
+
+        for (let i in _this.gameList) {
+            _this.gameList[i].numberAnimates = $('.mobile-numbers' + i).numberAnimate({
+              num: _this.gameList[i].jackpot + '',
+              speed: 800,
+              symbol: ',',
+              dot: 0
+            })
+            _this.gameList[i].timeAnimates = $('.time-number' + i).numberAnimate({
+              num: '240000',
+              speed: 800,
+              symbol: ' : ',
+              symbolNum: '2',
+              dot: 0
+            })
+          }
       })
       .catch(err => {
         console.error(`fail`, err)
@@ -274,22 +290,6 @@ export default {
               .then(_eth => {
                 _this.gameList[i].unitPrice = _eth.dividedBy(Math.pow(10, 18)).toNumber()
               })
-          }
-
-          for (let i in _this.gameList) {
-            _this.gameList[i].numberAnimates = $('.mobile-numbers' + i).numberAnimate({
-              num: _this.gameList[i].jackpot + '',
-              speed: 800,
-              symbol: ',',
-              dot: 0
-            })
-            _this.gameList[i].timeAnimates = $('.time-number' + i).numberAnimate({
-              num: '240000',
-              speed: 800,
-              symbol: ' : ',
-              symbolNum: '2',
-              dot: 0
-            })
           }
         })
     },

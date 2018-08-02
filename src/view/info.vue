@@ -238,7 +238,11 @@ export default {
                 this.orders[i].keyNum = _roundData[i].keys
                 this.orders[i].bonusR = _roundData[i].lucky
                 this.orders[i].bonusJ = _roundData[i].win
-                this.orders[i].bonusKey = _rounds[i].mask.mul(_roundData[i].keys).sub(_roundData[i].mask).dividedBy(Math.pow(10, 18)).toNumber()
+
+                this.context.fp3d.roundProfit(this.context.address, i)
+                  .then(_profit => {
+                    this.orders[i].bonusKey = _profit.dividedBy(Math.pow(10, 18)).toNumber()
+                  })                
               }
             })
         })
