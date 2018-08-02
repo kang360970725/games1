@@ -115,7 +115,7 @@ export default {
           totalInvestment: '0.00', // 总投入资产
           unitPrice: '0.00', // key单价
           surplus: '888', // 888倒计数
-          state: true, // 是否开启
+          state: false, // 是否开启
           buyNumber: '' // 购买数
         },
         {
@@ -124,7 +124,7 @@ export default {
           totalInvestment: '0.00', // 总投入资产
           unitPrice: '0.00', // key单价
           surplus: '888', // 888倒计数
-          state: true, // 是否开启
+          state: false, // 是否开启
           buyNumber: '' // 购买数
         },
         {
@@ -133,7 +133,7 @@ export default {
           totalInvestment: '0.00', // 总投入资产
           unitPrice: '0.00', // key单价
           surplus: '888', // 888倒计数
-          state: true, // 是否开启
+          state: false, // 是否开启
           buyNumber: '' // 购买数
         },
         {
@@ -142,7 +142,7 @@ export default {
           totalInvestment: '0.00', // 总投入资产
           unitPrice: '0.00', // key单价
           surplus: '888', // 888倒计数
-          state: true, // 是否开启
+          state: false, // 是否开启
           buyNumber: '' // 购买数
         },
         {
@@ -151,7 +151,7 @@ export default {
           totalInvestment: '0.00', // 总投入资产
           unitPrice: '0.00', // key单价
           surplus: '888', // 888倒计数
-          state: true, // 是否开启
+          state: false, // 是否开启
           buyNumber: '' // 购买数
         },
         {
@@ -160,7 +160,7 @@ export default {
           totalInvestment: '0.00', // 总投入资产
           unitPrice: '0.00', // key单价
           surplus: '888', // 888倒计数
-          state: true, // 是否开启
+          state: false, // 是否开启
           buyNumber: '' // 购买数
         },
         {
@@ -169,7 +169,7 @@ export default {
           totalInvestment: '0.00', // 总投入资产
           unitPrice: '0.00', // key单价
           surplus: '888', // 888倒计数
-          state: true, // 是否开启
+          state: false, // 是否开启
           buyNumber: '' // 购买数
         },
         {
@@ -178,7 +178,7 @@ export default {
           totalInvestment: '0.00', // 总投入资产
           unitPrice: '0.00', // key单价
           surplus: '888', // 888倒计数
-          state: true, // 是否开启
+          state: false, // 是否开启
           buyNumber: '' // 购买数
         },
         {
@@ -187,7 +187,7 @@ export default {
           totalInvestment: '0.00', // 总投入资产
           unitPrice: '0.00', // key单价
           surplus: '888', // 888倒计数
-          state: true, // 是否开启
+          state: false, // 是否开启
           buyNumber: '' // 购买数
         },
         {
@@ -196,7 +196,7 @@ export default {
           totalInvestment: '0.00', // 总投入资产
           unitPrice: '0.00', // key单价
           surplus: '888', // 888倒计数
-          state: true, // 是否开启
+          state: false, // 是否开启
           buyNumber: '' // 购买数
         },
         {
@@ -205,7 +205,7 @@ export default {
           totalInvestment: '0.00', // 总投入资产
           unitPrice: '0.00', // key单价
           surplus: '888', // 888倒计数
-          state: true, // 是否开启
+          state: false, // 是否开启
           buyNumber: '' // 购买数
         }
       ],
@@ -231,20 +231,20 @@ export default {
         }, 1000)
 
         for (let i in _this.gameList) {
-            _this.gameList[i].numberAnimates = $('.mobile-numbers' + i).numberAnimate({
-              num: _this.gameList[i].jackpot + '',
-              speed: 800,
-              symbol: ',',
-              dot: 0
-            })
-            _this.gameList[i].timeAnimates = $('.time-number' + i).numberAnimate({
-              num: '240000',
-              speed: 800,
-              symbol: ' : ',
-              symbolNum: '2',
-              dot: 0
-            })
-          }
+          _this.gameList[i].numberAnimates = $('.mobile-numbers' + i).numberAnimate({
+            num: _this.gameList[i].jackpot + '',
+            speed: 800,
+            symbol: ',',
+            dot: 0
+          })
+          _this.gameList[i].timeAnimates = $('.time-number' + i).numberAnimate({
+            num: '240000',
+            speed: 800,
+            symbol: ' : ',
+            symbolNum: '2',
+            dot: 0
+          })
+        }
       })
       .catch(err => {
         console.error(`fail`, err)

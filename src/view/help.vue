@@ -9,15 +9,15 @@
       <!--</ul>-->
       <!--</div>-->
       <div class="helpTxtBox">
-        <div class="help1">
-          <span>游戲規則</span><br><br><br>
+        <div class="help1" v-html="content">
+          <!--<span>游戲規則</span><br><br><br>-->
         </div>
         <br>
         <br>
       </div>
-      <div class="NoticeBox"><br>
-        <span>公告</span><br><br>
-      </div>
+      <!--<div class="NoticeBox"><br>-->
+        <!--<span>公告</span><br><br>-->
+      <!--</div>-->
     </div>
   </div>
 </template>
@@ -30,15 +30,39 @@ export default {
   components: {
     headers
   },
-  mounted () {
-    if (!!this.$route.query.type){
-      $('.NoticeBox').show();
-      $('.helpTxtBox').hide();
-    } else {
-      $('.NoticeBox').hide();
-      $('.helpTxtBox').show();
+  data: function () {
+    return {
+      type: 0,
+      content: ''
     }
   },
+  mounted () {
+    if (!!this.$route.query.type){
+      this.type = 0
+    } else {
+      this.type = 1
+    }
+    this.initData()
+  },
+  methods: {
+    initData: function () {
+      let _this = this
+      let obj = {
+        type: _this.type,
+        lang: localStorage.lang === 'zh' ? 0 : 1
+      }
+      _this.$axios.post('/getnoticelist', obj).then(function (result) {
+        let data = result.data || result
+        if (result.code === 0) {
+          _this.content = data[0].content
+        } else {
+          // alert(data.msg)
+        }
+      }).catch(function (err) {
+        console.log(err)
+      })
+    }
+  }
 }
 </script>
 

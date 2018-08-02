@@ -6,11 +6,10 @@ import router from './router'
 import axios from './axios'
 import util from '../utils/util'
 import VueI18n from 'vue-i18n'
-import  VueQuillEditor from 'vue-quill-editor'
+import VueQuillEditor from 'vue-quill-editor'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
-
 Vue.config.productionTip = false
 Vue.use(VueI18n)
 Vue.use(VueQuillEditor)

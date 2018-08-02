@@ -54,7 +54,7 @@
             <label>
               <span>{{$t('userinfo.nav2Txt')}}:</span>
               <input type="text" disabled="disabled" v-model="balance" placeholder="0.0000"/>
-              <button @click="withdrawal(context.address)">提现</button>
+              <button @click="withdrawal(context.address)" class="button">提现</button>
             </label>
             <br>
             <br>
@@ -106,7 +106,7 @@ export default {
   data: function () {
     return {
       type: '1', // tab切换
-      actState: true, // 邀请链接是否激活
+      actState: false, // 邀请链接是否激活
       InLink: 'www.baidu.com', // 专属邀请链接
       selfId: 0,
       refId: 0,
@@ -255,7 +255,7 @@ export default {
                 this.context.fp3d.roundProfit(this.context.address, i)
                   .then(_profit => {
                     this.orders[i].bonusKey = _profit.dividedBy(Math.pow(10, 18)).toNumber()
-                  })                
+                  })
               }
             })
         })

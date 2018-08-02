@@ -61,6 +61,7 @@ export default {
       let lang = this.$i18n.locale === 'zh' ? 'en' : 'zh'
       this.$i18n.locale = lang
       localStorage.setItem('lang' , lang)
+      window.location.reload()
     }
   }
 }
