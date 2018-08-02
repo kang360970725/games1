@@ -225,10 +225,16 @@ export default {
     loadUserData() {
       return this.context.fp3d.loadPlayerAllRound(this.context.address)
         .then(_roundData => {
-          for(let i = 0; i < _roundData.length; i ++) {
-            this.orders[i].num = i + 1
-            this.orders[i].keyNum = _roundData[i].keys
-          }
+          return this.context.fp3d.loadAllRound()
+            .then(_rounds => {
+              for(let i = 0; i < _roundData.length; i ++) {
+                this.orders[i].num = i + 1
+                this.orders[i].keyNum = _roundData[i].keys
+                this.orders[i].bonusR = _roundData[i].lucky
+                this.orders[i].bonusJ = _roundData[i].win
+                this.orders[i].bonusKey = _rounds[i].mask.mul(_roundData[i].keys).sub(_roundData[i].mask).dividedBy(Math.pow(10, 18)).toNumber()
+              }
+            })
         })
     }
   }

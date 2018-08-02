@@ -167,9 +167,20 @@ Fp3dMod.prototype.loadPlayerAllRound = function(address) {
         self.c.playerRoundData(address, i)
           .then(_data => {
             callback(null, {
+              /*
+              uint256 eth;         //eth player added to this round
+              uint256 keys;        //keys player bought in this round
+              uint256 mask;        //player mask in this round
+              uint256 lucky;       //player lucky profit in this round
+              uint256 affiliate;   //player affiliate in this round
+              uint256 win;        //player pool in this round
+              */
               eth: _data[0].dividedBy(Math.pow(10, 18)).toNumber(),
               keys: _data[1].dividedBy(Math.pow(10, 18)).toNumber(),
-              mask: _data[1].toNumber()
+              mask: _data[2].toNumber(),
+              lucky: _data[3].dividedBy(Math.pow(10, 18)).toNumber(),
+              affiliate: _data[4].dividedBy(Math.pow(10, 18)).toNumber(),
+              win: _data[5].dividedBy(Math.pow(10, 18)).toNumber()
             })
           })
       },
@@ -183,6 +194,10 @@ Fp3dMod.prototype.loadPlayerAllRound = function(address) {
       }
     )
   })
+}
+
+Fp3dMod.prototype.roundProfit = function(addr, round) {
+  return this.c.roundProfit(addr, round)
 }
 
 function getFp3d(web3) {

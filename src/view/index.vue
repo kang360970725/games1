@@ -223,7 +223,7 @@ export default {
         _this.initViewDataFn()
         setInterval(() => {
           _this.initViewDataFn()
-        }, 3 * 60 * 1000)
+        }, 4 * 60 * 1000)
         setInterval(function () {
           _this.initDataTxtFn()
         }, 1000)
