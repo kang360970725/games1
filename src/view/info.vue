@@ -28,7 +28,7 @@
             <div v-if="actState">
               <label>
                 <span>{{$t('userinfo.nav1Txt1')}} : </span>
-                <span>{{InLink}}</span>
+                <span>{{InLink}} &nbsp;&nbsp;&nbsp; <a>复制</a></span>
               </label>
               <br>
               <table class="ordersTab">
@@ -110,6 +110,12 @@ export default {
       balance: 0.00, // 钱包余额
       linkData: [{ // 邀请返利数据
         userInfo: 'All***',
+        bonus: '0.00'
+      },{ // 邀请返利数据
+        userInfo: 'Zha***',
+        bonus: '0.00'
+      },{ // 邀请返利数据
+        userInfo: 'Liu***',
         bonus: '0.00'
       }],
       orders: [   //每轮购买数据

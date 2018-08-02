@@ -6,10 +6,14 @@ import router from './router'
 import axios from './axios'
 import util from '../utils/util'
 import VueI18n from 'vue-i18n'
-// import md5 from 'js-md5'
+import  VueQuillEditor from 'vue-quill-editor'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
 
 Vue.config.productionTip = false
 Vue.use(VueI18n)
+Vue.use(VueQuillEditor)
 // 注册i18n实例并引入语言文件，文件格式等下解析
 const i18n = new VueI18n({
   locale: localStorage.lang || 'zh',

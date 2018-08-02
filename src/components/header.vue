@@ -14,10 +14,13 @@
       <ul>
         <li><a href="/">{{$t('common.home')}}</a></li>
         <li><a href="/help?type=notice">{{$t('common.notice')}}</a></li>
-        <!--<li><a href="/record">{{$t('common.winning')}}</a></li>-->
+        <li><a href="/info">{{$t('userinfo.nav1Txt1')}}</a></li>
       </ul>
     </div>
     <div class="r header-operate-container">
+      <div class="operate-right">
+        <a class="" :title="$t('common.community')">{{$t('common.community')}}</a>
+      </div>
       <div class="operate-right">
         <a class="" href="/help" :title="$t('common.help')">{{$t('common.help')}}</a>
       </div>
@@ -64,6 +67,9 @@ export default {
 </script>
 
 <style scoped>
+  li{
+    list-style: none;
+  }
   .icon-question{
     background-image: url('../assets/images/help.png');
     background-size: 100%;

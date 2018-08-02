@@ -5,6 +5,7 @@ import info from '@/view/info'
 import help from '@/view/help'
 import record from '@/view/record'
 import test from '@/view/test'
+import admin from '@/view/admin/admin'
 Vue.use(Router)
 
 export default new Router({
@@ -34,6 +35,11 @@ export default new Router({
       path: '/test',
       name: 'test',
       component: test
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: admin
     }
   ]
 })
