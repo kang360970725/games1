@@ -225,6 +225,7 @@ export default {
           this.actState = false
         } else {
           this.actState = true
+          this.InLink = this.refUrl(_id)
         }
         return this.loadUserData()
       })
@@ -258,6 +259,9 @@ export default {
               }
             })
         })
+    },
+    refUrl(refId) {
+      return `http://www.fomo888.com/r=${refId}`
     },
     withdrawal(address) {
       return this.context.fp3d.withdrawal(address)
