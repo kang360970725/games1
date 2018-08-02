@@ -40,3 +40,7 @@ exports.fp3d2 = {
 exports.fp3dM = {
   '3': '0x9714d5987e19544e09cb656e0a117b486b780487'
 }
+
+exports.fp3dM_deploy = {
+  '3': 3755125
+}

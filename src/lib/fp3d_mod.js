@@ -93,7 +93,7 @@ Fp3dMod.prototype.withdrawal = function(addr) {
   const self = this
   return self.totalProfit(addr)
     .then(_profit => {
-      if(_profit.gte(self.params.minimumWithdraw)) {
+      if(_profit.lt(self.params.minimumWithdraw)) {
         // u can't withdraw
         return Promise.reject(errors.BALANCE_NOT_ENOUGH)
       } else {
