@@ -40,7 +40,23 @@ function curBlock(event, catetory) {
  * @param {*} category
  */
 function storeLuckyEvent(eve, block, txHash, category) {
-
+  const sql = `INSERT INTO referer (player, referer) VALUES("${eve.referral}", "${eve.pUser}")`
+  console.log(sql)
+  console.log(sql)
+  return new Promise((r, j) => {
+    connection.query(sql, (err, results, fields) => {
+      if (err) {
+        console.error(`fail to query start block of ${event} ${catetory}`, err)
+        j(err)
+      } else {
+        if (results.length === 0) {
+          r(0)
+        } else {
+          r(0)
+        }
+      }
+    })
+  })
 }
 
 /**
@@ -51,7 +67,23 @@ function storeLuckyEvent(eve, block, txHash, category) {
  * @param {*} category
  */
 function storeReferEvent(eve, block, txHash, category) {
-
+  const sql = `INSERT INTO referer (player, referer) VALUES("${eve.referral}", "${eve.pUser}")`
+  console.log(sql)
+  console.log(sql)
+  return new Promise((r, j) => {
+    connection.query(sql, (err, results, fields) => {
+      if (err) {
+        console.error(`fail to query start block of ${event} ${catetory}`, err)
+        j(err)
+      } else {
+        if (results.length === 0) {
+          r(0)
+        } else {
+          r(0)
+        }
+      }
+    })
+  })
 }
 
 function updateEventBlock(event, category, block) {
