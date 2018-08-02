@@ -200,6 +200,10 @@ Fp3dMod.prototype.roundProfit = function(addr, round) {
   return this.c.roundProfit(addr, round)
 }
 
+Fp3dMod.prototype.userReferId = function(addr) {
+  return this.c.playerIds(addr)
+}
+
 function getFp3d(web3) {
   if (deployed.fp3dM.hasOwnProperty(web3.version.network)) {
     return new Promise((r, j) => {

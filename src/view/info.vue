@@ -54,6 +54,7 @@
             <label>
               <span>{{$t('userinfo.nav2Txt')}}:</span>
               <input type="text" disabled="disabled" v-model="balance" placeholder="0.0000"/>
+              <button @click="withdrawal(context.address)">提现</button>
             </label>
             <br>
             <br>
@@ -107,6 +108,8 @@ export default {
       type: '1', // tab切换
       actState: true, // 邀请链接是否激活
       InLink: 'www.baidu.com', // 专属邀请链接
+      selfId: 0,
+      refId: 0,
       balance: 0.00, // 钱包余额
       linkData: [{ // 邀请返利数据
         userInfo: 'All***',
@@ -214,6 +217,15 @@ export default {
       })
       .then(_fp3d => {
         this.context.fp3d = _fp3d
+        return _fp3d.userReferId(this.context.address)
+      })
+      .then(_id => {
+        this.selfId = _id
+        if (_id.eq(0)) {
+          this.actState = false
+        } else {
+          this.actState = true
+        }
         return this.loadUserData()
       })
       .then(() => {
@@ -226,7 +238,7 @@ export default {
   methods: {
     activationLinkFn: function () { //激活邀请链接
       let _this = this
-      return _this.context.fp3d.register()
+      return _this.context.fp3d.register(this.refId)
     },
     loadUserData() {
       return this.context.fp3d.loadPlayerAllRound(this.context.address)
@@ -245,6 +257,14 @@ export default {
                   })                
               }
             })
+        })
+    },
+    withdrawal(address) {
+      return this.context.fp3d.withdrawal(address)
+        .catch(err => {
+          if (err == 16) {
+            alert(`提现小于最小额度`)
+          }
         })
     }
   }
