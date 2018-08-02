@@ -66,7 +66,7 @@ function storeLuckyEvent(eve, block, txHash, category) {
  * @param {*} category
  */
 function storeReferEvent(eve, block, txHash, category) {
-  const sql = `INSERT INTO referer (player, referer) VALUES("${eve.referral}", "${eve.pUser}")`
+  const sql = `INSERT INTO referer (player, referer, category) VALUES("${eve.referral}", "${eve.pUser}", "${category}")`
   console.log(sql)
   console.log(sql)
   return new Promise((r, j) => {
@@ -104,9 +104,37 @@ function updateEventBlock(event, category, block) {
   })
 }
 
+/**
+ * 
+ * @param {*} eve { buyer, keys, cost, round }
+ * @param {*} block 
+ * @param {*} tx 
+ * @param {*} NETWORK 
+ */
+function storeBuyEvent(eve, block, tx, NETWORK) {
+  const sql = `INSERT INTO buy (buyer, bought, cost, round, block, tx, category) VALUES("${eve.buyer}", "${eve.keys}", "${eve.cost}", ${eve.round}, ${block}, "${tx}", "${NETWORK}")`
+  console.log(sql)
+  return new Promise((r, j) => {
+    connection.query(sql, (err, results, fields) => {
+      if (err) {
+        console.error(`fail to query start block of buy ${NETWORK}`, err)
+        j(err)
+      } else {
+        if (results.length === 0) {
+          r(0)
+        } else {
+          r(0)
+        }
+      }
+    })
+  })
+}
+
 module.exports = {
   startBlock,
   curBlock,
   storeLuckyEvent,
+  storeReferEvent,
+  storeBuyEvent,
   updateEventBlock
 }

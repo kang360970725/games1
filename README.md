@@ -47,7 +47,7 @@ use fomo3d;
 
 CREATE TABLE status (
   id INT NOT NULL AUTO_INCREMENT,
-  category CHAR(20),
+  category CHAR(20) NOT NULL,
   event VARCHAR(255),
   block BIGINT,
   PRIMARY KEY (id),
@@ -69,11 +69,12 @@ CREATE TABLE lucky (
   round INT,
   lucky INT,
   amount BIGINT,
-  category CHAR(20),
+  category CHAR(20) NOT NULL,
   block BIGINT,
   tx VARCHAR(100),
   PRIMARY KEY (id),
-  UNIQUE (round, category, lucky)
+  UNIQUE (round, category, lucky),
+  UNIQUE (tx)
 );
 
 | property | type | extra |
@@ -94,6 +95,7 @@ CREATE TABLE referer (
   player VARCHAR(80),
   referer INT,
   refId INT,
+  category CHAR(20) NOT NULL,
   PRIMARY KEY (id),
   UNIQUE (player)
 );
@@ -102,6 +104,20 @@ CREATE TABLE referer (
 |---| -----| --- |
 | id | INT | 自增主键 |
 | player | VARCHAR(80) | 玩家地址 |
+| category | CHAR(20) | 网络 |
 | referer | INT | 推荐人id |
 | refId | INT(100) | 玩家自身id |
+
+### buy 表 入金记录
+
+| property | type | extra |
+|---| -----| --- |
+| id | INT | 自增主键 |
+| buyer | VARCHAR(80) | 买家地址 |
+| bought | VARCHAR(80) | 购买key数量 |
+| cost | VARCHAR(80) | 花费eth数量 |
+| category | CHAR(20) | 网络 |
+| round | INT | 轮次 |
+| block | BIGINT | block号 |
+| tx | VARCHAR(100) | 交易hash |
 
