@@ -34,7 +34,7 @@ CREATE TABLE lucky (
   block BIGINT,
   tx VARCHAR(100),
   PRIMARY KEY (id),
-  UNIQUE (round, category)
+  UNIQUE (round, category, lucky)
 );
 
 | property | type |
