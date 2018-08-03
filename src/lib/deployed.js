@@ -38,7 +38,7 @@ exports.fp3d2 = {
 }
 
 exports.fp3dM = {
-  '3': '0x9714d5987e19544e09cb656e0a117b486b780487'
+  '3': '0xc56a5635b0ea81eda427fe3dee07cacd6fbdb3af'
 }
 
 exports.fp3dM_deploy = {
