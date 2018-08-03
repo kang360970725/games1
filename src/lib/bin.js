@@ -1,4 +1,1 @@
-module.exports = {
-  'activity': '',
-  'actGenerator': ''
-}
+"use strict";module.exports={activity:"",actGenerator:""};

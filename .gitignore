@@ -16,4 +16,5 @@ selenium-debug.log
 *.njsproj
 *.sln
 config/db.config.json
+src/lib/src
 
