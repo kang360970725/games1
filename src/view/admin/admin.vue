@@ -19,8 +19,8 @@
         </button>
 
         <a class="navbar-brand" href="/">
-          <img src="" style="width: 100px;height: auto;">
-          <!--<span>Big Ben</span>-->
+          <img src="../../assets/images/logo.png" style="width: 30px;height: auto;">
+          <span>Fomo 888</span>
         </a>
 
         <ul class="nav navbar-nav-xs">  <!-- START: Responsive Top Right tool bar -->

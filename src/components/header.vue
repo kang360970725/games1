@@ -2,8 +2,7 @@
   <div class="nav-content position clearfix">
     <p class="mobileindex-logo l">
       <a href="" target="_blank" :title="$t('common.home')">
-        <!--<img src="./TalkingData移动观象台—全球领先免费公开数据实时查询平台_files/TDlogo.png" alt="www.talkingdata.com"-->
-        <!--title="www.talkingdata.com">-->
+        <img src="../assets/images/logo.png">
       </a>
       <a href="" title="GamBling">
         <!--<img src="./TalkingData移动观象台—全球领先免费公开数据实时查询平台_files/logo-ovservatory.png" alt="mi.talkingdata.com"-->
@@ -19,7 +18,7 @@
     </div>
     <div class="r header-operate-container">
       <div class="operate-right">
-        <a class="" :title="$t('common.community')">{{$t('common.community')}}</a>
+        <a class="" href="/info?t=s" :title="$t('common.community')">{{$t('common.community')}}</a>
       </div>
       <div class="operate-right">
         <a class="" href="/help" :title="$t('common.help')">{{$t('common.help')}}</a>
@@ -39,6 +38,9 @@
     <div class="showMsgModal">
         <span>123456</span>
       <i></i>
+    </div>
+    <div class="shequnBox">
+
     </div>
   </div>
 </template>

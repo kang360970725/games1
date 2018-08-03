@@ -21,7 +21,7 @@ body.en_index, body.index {
 .nav-content p a {
   display: block;
   float: left;
-  height: 32px;
+  height: 45px;
   margin: 4px 13px 0 0
 }
 
@@ -48,8 +48,9 @@ body.en_index, body.index {
 
 .user-number h4, .time-number h4 {
   color: #fff;
-  font-size: 16px;
-  text-align: center
+  font-size: 14px;
+  text-align: center;
+  font-weight: 400;
 }
 .search-container label{;
   line-height: 40px;
@@ -131,10 +132,10 @@ body.en_index, body.index {
 }
 
 .mt-number-animate {
-  line-height: 66px;
-  height: 66px;
+  line-height: 50px;
+  height: 50px;
   /*margin: 24px 0 30px;*/
-  font-size: 40px;
+  font-size: 36px;
   overflow: hidden;
   display: inline-block;
   position: relative;
@@ -148,7 +149,7 @@ body.en_index, body.index {
 
 .mt-number-animate .mt-number-animate-dot {
   width: 14px;
-  line-height: 66px;
+  line-height: 46px;
   float: left;
   text-align: center;
   font-family: roboto-thin

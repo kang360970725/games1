@@ -5,8 +5,9 @@ import store from '../vuex/store'
 import router from '../router'
 
 let axiosRequset = axios.create({
-  baseURL: 'http://localhost:3000'
-  // baseURL: 'http://192.168.0.1:8080'
+  // baseURL: 'https://localhost:3000'
+  // baseURL: 'https://103.71.51.222:3000'
+  baseURL: 'http://103.71.51.222:3000'
 })
 
 // axiosRequset.interceptors.request.use((config) => {

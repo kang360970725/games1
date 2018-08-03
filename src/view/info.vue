@@ -7,6 +7,7 @@
             <li :class="type == 1 ? 'curr' : ''" @click="type = 1">{{$t('userinfo.nav1')}}</li>
             <li :class="type == 2 ? 'curr' : ''" @click="type = 2">{{$t('userinfo.nav2')}}</li>
             <li :class="type == 3 ? 'curr' : ''" @click="type = 3">{{$t('userinfo.nav3')}}</li>
+            <li :class="type == 4 ? 'curr' : ''" @click="type = 4">{{$t('userinfo.nav4')}}</li>
           </ul>
         </div>
         <div class="contentBox">
@@ -28,7 +29,7 @@
             <div v-if="actState">
               <label>
                 <span>{{$t('userinfo.nav1Txt1')}} : </span>
-                <span>{{InLink}} &nbsp;&nbsp;&nbsp; <a>复制</a></span>
+                <span>{{InLink}} &nbsp;&nbsp;&nbsp; <a style="color: #49dc93;" @click="copyCodeFn">复制</a></span>
               </label>
               <br>
               <table class="ordersTab">
@@ -86,8 +87,14 @@
               </tbody>
             </table>
           </div>
+          <div class="Invitation-info" v-show="type == 4">
+            <p class="title">{{$t('userinfo.nav4')}}</p>
+            <div v-html="comHtml">
+            </div>
+          </div>
         </div>
       </div>
+      <div id="biao1" style="display: none;"></div>
     </div>
 </template>
 
@@ -106,8 +113,9 @@ export default {
   data: function () {
     return {
       type: '1', // tab切换
-      actState: false, // 邀请链接是否激活
-      InLink: 'www.baidu.com', // 专属邀请链接
+      actState: true, // 邀请链接是否激活
+      InLink: 'https://fomo888.io', // 专属邀请链接
+      comHtml: '', // 社群信息
       selfId: 0,
       refId: 0,
       balance: 0.00, // 钱包余额
@@ -235,6 +243,11 @@ export default {
             this.balance = _profit.dividedBy(Math.pow(10, 18)).toNumber()
           })
       })
+
+    if (this.$route.query.t == 's'){
+      this.type = 4
+    }
+    this.initData()
   },
   methods: {
     activationLinkFn: function () { //激活邀请链接
@@ -270,6 +283,38 @@ export default {
             alert(`提现小于最小额度`)
           }
         })
+    },
+    copyCodeFn: function () {
+      let _this = this
+      // let txt = window.location.origin + '/register?invitcode=' + _this.user.inviteCode
+      let txt = _this.InLink
+      $('#biao1').text(txt)
+      var Url2 = document.getElementById('biao1').innerText
+      var oInput = document.createElement('input')
+      oInput.value = Url2
+      document.body.appendChild(oInput)
+      oInput.select() // 选择对象
+      document.execCommand('Copy') // 执行浏览器复制命令
+      oInput.className = 'oInput'
+      oInput.style.display = 'none'
+      alert('复制成功')
+    },
+    initData: function () {
+      let _this = this
+      let obj = {
+        type: 2,
+        lang: localStorage.lang === 'zh' ? 0 : 1
+      }
+      _this.$axios.post('/getnoticelist', obj).then(function (result) {
+        let data = result.data || result
+        if (result.code === 0) {
+          _this.comHtml = data[0].content
+        } else {
+          // alert(data.msg)
+        }
+      }).catch(function (err) {
+        console.log(err)
+      })
     }
   }
 }
