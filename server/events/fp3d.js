@@ -2,11 +2,7 @@
 const Store = require('./store')
 const utils = require('../utils')
 
-const EVENTS = {
-  REFERER: 'referer',
-  LUCKY: 'lucky',
-  BUY: 'buy'
-}
+const EVENTS = require('./events')
 
 const NETWORK = process.env.NETWORK
 const luckyEvents = []

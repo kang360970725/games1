@@ -11,19 +11,19 @@ function startBlock(event, category) {
   return _startBlocks[category]
 }
 
-function curBlock(event, catetory) {
-  const sql = `SELECT block FROM status WHERE category = "${catetory}" AND event = "${event}" `
+function curBlock(event, category) {
+  const sql = `SELECT block FROM status WHERE category = "${category}" AND event = "${event}" `
   console.log(sql)
   return new Promise((r, j) => {
     connection.query(sql, (err, results, fields) => {
       if (err) {
-        console.error(`fail to query start block of ${event} ${catetory}`, err)
+        console.error(`fail to query start block of ${event} ${category}`, err)
         j(err)
       } else {
         if (results.length === 0) {
           r(0)
         } else if(results.length !== 1) {
-          throw `${event} ${cateogry} has more than one record`
+          throw `${event} ${category} has more than one record`
         } else {
           r(results[0].block + 1)
         }
@@ -45,7 +45,7 @@ function storeLuckyEvent(eve, block, txHash, category) {
   return new Promise((r, j) => {
     connection.query(sql, (err, results, fields) => {
       if (err) {
-        console.error(`fail to query start block of lucky ${catetory}`, err)
+        console.error(`fail to query start block of lucky ${category}`, err)
         j(err)
       } else {
         if (results.length === 0) {
@@ -72,7 +72,7 @@ function storeReferEvent(eve, block, txHash, category) {
   return new Promise((r, j) => {
     connection.query(sql, (err, results, fields) => {
       if (err) {
-        console.error(`fail to query start block of referer ${catetory}`, err)
+        console.error(`fail to query start block of referer ${category}`, err)
         j(err)
       } else {
         if (results.length === 0) {
@@ -91,7 +91,7 @@ function updateEventBlock(event, category, block) {
   return new Promise((r, j) => {
     connection.query(sql, (err, results, fields) => {
       if (err) {
-        console.error(`fail to query start block of ${event} ${catetory}`, err)
+        console.error(`fail to query start block of ${event} ${category}`, err)
         j(err)
       } else {
         if (results.length === 0) {
@@ -128,6 +128,11 @@ function storeBuyEvent(eve, block, tx, NETWORK) {
       }
     })
   })
+}
+
+function loadEventData(event, category) {
+  sql = `select * from ${event} where category = "${category}`
+  
 }
 
 module.exports = {
