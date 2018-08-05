@@ -6,14 +6,16 @@ import router from '../router'
 
 let axiosRequset = axios.create({
   // baseURL: 'https://localhost:3000'
-  // baseURL: 'https://103.71.51.222:3000'
-  baseURL: 'http://103.71.51.222:3000'
+  // baseURL: 'https://103.71.51.222'
+  baseURL: 'https://103.71.51.230'
+  // baseURL: 'http://103.71.51.222:3000'
 })
 
 // axiosRequset.interceptors.request.use((config) => {
-//   config.headers['Access-Control-Allow-Origin'] = '*'
-//   config.data = qs.stringify(config.data)
-//   return config
+  // config.headers['Access-Control-Allow-Origin'] = '*'
+  // config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+  // config.data = qs.stringify(config.data)
+  // return config
 // })
 
 axiosRequset.interceptors.response.use((result) => {
