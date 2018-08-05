@@ -107,4 +107,27 @@ async function initBuyEvents(fp3d, latest) {
     })
 }
 
+async function initWithdrawalEvents(pf3d, latest) {
+  let fromBlock = await Store.curBlock(EVENTS.BUY, NETWORK)
+  if (fromBlock === 0) {
+    fromBlock = await Store.startBlock(EVENTS.BUY, NETWORK)
+  }
+
+  return fp3d.getPastEvents('Withdrawal', { fromBlock, toBlock:latest})
+    .then(async events => {
+      try {
+          events.forEach(async eve => {
+            let block = eve.blockNumber
+            let tx = eve.transactionHash
+            eve = eve.returnValues
+            let { player, amount, fee } = eve
+
+            await Store.storeWithdrawalEvent(eve, block, tx, NETWORK)
+          })
+          return await Store.updateEventBlock(EVENTS.WITHDRAWAL, NETWORK, latest)
+      } catch (err) {
+        console.error(err)
+      }
+    })
+}
 module.exports = Init

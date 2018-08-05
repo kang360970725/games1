@@ -45,7 +45,7 @@ function storeLuckyEvent(eve, block, txHash, category) {
   return new Promise((r, j) => {
     connection.query(sql, (err, results, fields) => {
       if (err) {
-        console.error(`fail to query start block of lucky ${category}`, err)
+        console.error(`fail to insert lucky event ${NETWORK}`, err)
         j(err)
       } else {
         if (results.length === 0) {
@@ -72,7 +72,7 @@ function storeReferEvent(eve, block, txHash, category) {
   return new Promise((r, j) => {
     connection.query(sql, (err, results, fields) => {
       if (err) {
-        console.error(`fail to query start block of referer ${category}`, err)
+        console.error(`fail to insert refer event ${NETWORK}`, err)
         j(err)
       } else {
         if (results.length === 0) {
@@ -117,7 +117,33 @@ function storeBuyEvent(eve, block, tx, NETWORK) {
   return new Promise((r, j) => {
     connection.query(sql, (err, results, fields) => {
       if (err) {
-        console.error(`fail to query start block of buy ${NETWORK}`, err)
+        console.error(`fail to insert buy event ${NETWORK}`, err)
+        j(err)
+      } else {
+        if (results.length === 0) {
+          r(0)
+        } else {
+          r(0)
+        }
+      }
+    })
+  })
+} 
+
+/**
+ * 
+ * @param {*} eve { player, amount, fee }
+ * @param {*} block 
+ * @param {*} tx 
+ * @param {*} NETWORK 
+ */
+function storeWithdrawalEvent(eve, block, tx, NETWORK) {
+  const sql = `INSERT INTO withdrawal (player, amount, fee, block, tx, category) VALUES("${eve.player}", "${eve.amount}", "${eve.fee}", ${block}, "${tx}", "${NETWORK}")`
+  console.log(sql)
+  return new Promise((r, j) => {
+    connection.query(sql, (err, results, fields) => {
+      if (err) {
+        console.error(`fail to insert withdrawal event ${NETWORK}`, err)
         j(err)
       } else {
         if (results.length === 0) {
@@ -131,8 +157,17 @@ function storeBuyEvent(eve, block, tx, NETWORK) {
 }
 
 function loadEventData(event, category) {
-  sql = `select * from ${event} where category = "${category}`
-  
+  const sql = `select * from ${event} where category = "${category}`
+  return new Promise((r, j) => {
+    connection.query(sql, (err, results, fields) => {
+      if (err) {
+        console.error(`fail to query ${event} of ${category}`)
+        j(err)
+      } else {
+        r(results)
+      }
+    })
+  })
 }
 
 module.exports = {
@@ -141,5 +176,7 @@ module.exports = {
   storeLuckyEvent,
   storeReferEvent,
   storeBuyEvent,
-  updateEventBlock
+  storeWithdrawalEvent,
+  updateEventBlock,
+  loadEventData
 }

@@ -110,6 +110,19 @@ CREATE TABLE referer (
 
 ### buy 表 入金记录
 
+CREATE TABLE buy (
+  id INT NOT NULL AUTO_INCREMENT,
+  buyer VARCHAR(80),
+  bought VARCHAR(80),
+  cost VARCHAR(80),
+  round INT,
+  block BIGINT,
+  category CHAR(20) NOT NULL,
+  tx VARCHAR(100),
+  PRIMARY KEY (id),
+  UNIQUE (tx)
+);
+
 | property | type | extra |
 |---| -----| --- |
 | id | INT | 自增主键 |
@@ -120,4 +133,28 @@ CREATE TABLE referer (
 | round | INT | 轮次 |
 | block | BIGINT | block号 |
 | tx | VARCHAR(100) | 交易hash |
+
+### withdrawal 提现表
+
+CREATE TABLE withdrawal (
+  id INT NOT NULL AUTO_INCREMENT,
+  player VARCHAR(80),
+  amount VARCHAR(80),
+  fee VARCHAR(80),
+  block BIGINT,
+  category CHAR(20) NOT NULL,
+  tx VARCHAR(100),
+  PRIMARY KEY (id),
+  UNIQUE (tx)
+);
+
+| property | type | extra |
+|----------|------|-------|
+|  id      | INT | 自增主键 |
+|  player   | VARCHAR(80) | 玩家地址 |
+| amount | VARCHAR(80) | 提现数量 |
+| fee    | VARCHAR(80) | 手续费 |
+| block  | BIGINT | block号 |
+| tx    | VARCHAR(100) | 交易hash |
+| category  | CHAR(20) | 网络 |
 
