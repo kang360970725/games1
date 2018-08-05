@@ -70,12 +70,12 @@
             <tr>
               <th width="33%">用户</th>
               <th width="33%">金额</th>
-              <th width="33%">时间</th>
+              <th width="33%">交易</th>
             </tr>
             <tr>
               <td>{{!!Ranking888[index] ? Ranking888[index].address  : '---'}}</td>
               <td>{{!!Ranking888[index] ? Ranking888[index].number  : '---'}}</td>
-              <td>{{!!Ranking888[index] ? Ranking888[index].time  : '---'}}</td>
+              <td>{{!!Ranking888[index] ? Ranking888[index].tx.substr(0, 5) + '...'  : '---'}}</td>
             </tr>
           </table>
         </div>
@@ -104,9 +104,11 @@
 
 <script>
 import headers from '../components/header'
+import { setInterval } from 'timers';
 const etherEnv = require('@/lib/etherEnv')
 const fp3dMod = require('@/lib/fp3d_mod')
 const async = require('async')
+const api = require('@/api/backend')
 
 export default {
   components: {
@@ -242,14 +244,14 @@ export default {
       rollList: ['第一轮 Liu***获得了第888位奖励' , '第一轮 All***成功夺得了最终奖池'],
       Ranking888: [ // 888 榜单数据列表轮次(888榜单只会有一个存在)
         {
-          address: '0x29cf8f3bf87e03c6ddf2480b02a0e4140ad67011',
-          number: '0.71231123',
-          time: '2018-08-05'
+          address: null,
+          number: null,
+          tx: "",
         },
         {
-          address: '0x29cf8f3bf87e03c6ddf2480b02a0e4140ad67011',
-          number: '0.71231123',
-          time: '2018-08-05'
+          address: null,
+          number: null,
+          tx: ""
         }
       ],
       bonusList: [ // 分红数据轮次
@@ -374,6 +376,12 @@ export default {
           _this.initViewDataFn()
         }, 30 * 1000)
       })
+      .then(() => {
+        _this.updateLuckies()
+        setInterval(() => {
+          _this.updateLuckies()
+        }, 5 * 60 * 1000)
+      })
       .catch(err => {
         console.error(`fail`, err)
       })
@@ -458,6 +466,19 @@ export default {
         _this.gameList[i].timeAnimates.resetData(txt + '')
         _this.gameList[i].numberAnimates.resetData(_this.gameList[i].jackpot + '')
       }
+    },
+    updateLuckies: function () {
+      return api.luckies(this.context.network)
+        .then(_luckies => {
+          _luckies.forEach(_lucky => {
+            let _round = _lucky.round
+            this.Ranking888[_round].address = _lucky.buyer
+            this.Ranking888[_round].number = _lucky.amount / (Math.pow(10, 18))
+            this.Ranking888[_round].tx = _lucky.tx
+          })
+        })
+        .then(() => {
+        })
     }
   }
 }
