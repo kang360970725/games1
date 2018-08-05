@@ -42,6 +42,24 @@ router.get('/fp3d/luckies', async (ctx, next) => {
   }
 })
 
+router.get('/fp3d/g_stat', async (ctx, next) => {
+  ctx.response.type = 'json'
+  let ret = {}
+  try {
+    ret = await store.loadGStat(ctx.query.player, NETWORK)
+    ctx.response.body = {
+      code: 0,
+      data: ret.length > 0 ? ret[0] : {}
+    }
+  } catch (err) {
+    console.error(`fail to get luckies data`, err)
+    ctx.response.body = {
+      code: errors.UNKNOWN_ERROR,
+      data: ret
+    }
+  }
+})
+
 router.get('/fp3d/random_players', async (ctx, next) => {
   ctx.response.type = 'json'
   let players = []

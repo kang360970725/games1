@@ -224,6 +224,20 @@ function updateRegister(user, id, referer, category) {
   })
 }
 
+function loadGStat(user, category) {
+  const sql = `select * from g_stat where player="${user}" and category="${category}"`
+  return new Promise((r, j) => {
+    connection.query(sql, (err, results, fields) => {
+      if (err) {
+        console.error(`fail to query ${event} of ${category}`)
+        j(err)
+      } else {
+        r(results)
+      }
+    })
+  })
+}
+
 function loadEventData(event, category) {
   const sql = `select * from ${event} where category = "${category}"`
   return new Promise((r, j) => {
@@ -249,5 +263,6 @@ module.exports = {
   updateEventBlock,
   updateReferer,
   updateRegister,
+  loadGStat,
   loadEventData
 }
