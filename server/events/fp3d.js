@@ -17,19 +17,23 @@ async function Init(fp3d, web3) {
     console.log(`gather data in new round`)
     latestBlock = await web3.eth.getBlockNumber()
     console.log(`init with latest block`, latestBlock)
-    initReferEvents(fp3d, latestBlock)
+    await initReferEvents(fp3d, latestBlock)
       .catch(err => {
         console.log(`fail to load refer events`, err)
       })
-    initLuckyEvents(fp3d, latestBlock)
+    await initLuckyEvents(fp3d, latestBlock)
       .catch(err => {
         console.log(`fail to load lucky events`, err)
       })
-    initBuyEvents(fp3d, latestBlock)
+    await initBuyEvents(fp3d, latestBlock)
       .catch(err => {
         console.log(`fail to load buy events`, err)
       })
-    initWithdrawalEvents(fp3d, latestBlock)
+    await initWithdrawalEvents(fp3d, latestBlock)
+      .catch(err => {
+        console.log(`fail to load withdrawal events`, err)
+      })
+    await initRegisterEvents(fp3d, latestBlock)
       .catch(err => {
         console.log(`fail to load withdrawal events`, err)
       })
