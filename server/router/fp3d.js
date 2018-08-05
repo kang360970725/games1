@@ -42,5 +42,8 @@ router.get('/fp3d/luckies', async (ctx, next) => {
   }
 })
 
+router.get('/fp3d/r_players', async (ctx, next) => {
+  
+})
 module.exports = router
 

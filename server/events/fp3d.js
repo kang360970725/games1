@@ -14,21 +14,25 @@ async function Init(fp3d, web3) {
   //fp3d.c.instance
   let latestBlock
   while(true) {
+    console.log(`gather data in new round`)
     latestBlock = await web3.eth.getBlockNumber()
     console.log(`init with latest block`, latestBlock)
     initReferEvents(fp3d, latestBlock)
       .catch(err => {
-        console.log(`fail to load refer events`)
+        console.log(`fail to load refer events`, err)
       })
     initLuckyEvents(fp3d, latestBlock)
       .catch(err => {
-        console.log(`fail to load lucky events`)
+        console.log(`fail to load lucky events`, err)
       })
     initBuyEvents(fp3d, latestBlock)
       .catch(err => {
-        console.log(`fail to load buy events`)
+        console.log(`fail to load buy events`, err)
       })
-
+    initWithdrawalEvents(fp3d, latestBlock)
+      .catch(err => {
+        console.log(`fail to load withdrawal events`, err)
+      })
     await new Promise((r, j) => {
       setTimeout(r, 5 * 30 * 1000)
     })
@@ -107,7 +111,7 @@ async function initBuyEvents(fp3d, latest) {
     })
 }
 
-async function initWithdrawalEvents(pf3d, latest) {
+async function initWithdrawalEvents(fp3d, latest) {
   let fromBlock = await Store.curBlock(EVENTS.BUY, NETWORK)
   if (fromBlock === 0) {
     fromBlock = await Store.startBlock(EVENTS.BUY, NETWORK)

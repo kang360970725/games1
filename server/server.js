@@ -24,7 +24,7 @@ web3.setProvider(new web3.providers.HttpProvider(`https://${networkMap[current]}
 // RopstenWeb3.setProvider(new RopstenWeb3.providers.HttpProvider(`https://ropsten.infura.io/vAugb8H4cG1bOuFMZj3y`))
 
 
-
+/*
 Fp3d.getFp3d(web3)
     .then(_fp3c => {
         utils.initFp3d(_fp3c)
@@ -33,7 +33,7 @@ Fp3d.getFp3d(web3)
         console.log(`init fp3d failed`, err)
         process.exit(-1)
     })
-
+*/
 app.use(cors())
 app.use(koaBody())
 

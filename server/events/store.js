@@ -156,8 +156,13 @@ function storeWithdrawalEvent(eve, block, tx, NETWORK) {
   })
 }
 
+function selectRandomPlayers(category) {
+  const sql = `SELECT DISTINCT buyer FROM buy where category = "${category}"`
+  
+}
+
 function loadEventData(event, category) {
-  const sql = `select * from ${event} where category = "${category}`
+  const sql = `select * from ${event} where category = "${category}"`
   return new Promise((r, j) => {
     connection.query(sql, (err, results, fields) => {
       if (err) {

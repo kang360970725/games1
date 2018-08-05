@@ -160,7 +160,7 @@ CREATE TABLE withdrawal (
 
 ### group 团长表
 
-CREATE TABLE group (
+CREATE TABLE g_stat (
   id INT NOT NULL AUTO_INCREMENT,
   player VARCHAR(80),
   refId INT,
@@ -169,8 +169,7 @@ CREATE TABLE group (
   refWithdrawal VARCHAR(80),
   category CHAR(20) NOT NULL,
   PRIMARY KEY (id),
-  UNIQUE (tx),
-  UNIQUE (address),
+  UNIQUE (player),
   UNIQUE (refId)
 );
 
