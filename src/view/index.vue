@@ -59,13 +59,46 @@
       </div>
     </div>
     <div class="footer" style="height: 120px;width: 100%;">
+      <div class="titBox">
+        <div><h5>888榜单</h5></div>
+        <div><h5>分红榜单</h5></div>
+      </div>
+      <div class="RankingBox" v-for="(item,index) in gameList" v-show="item.state">
+        <h5>第{{index + 1 }}轮</h5>
+        <div class="leftListBox" v-if="item.state">
+          <table>
+            <tr>
+              <th width="33%">用户</th>
+              <th width="33%">金额</th>
+              <th width="33%">时间</th>
+            </tr>
+            <tr>
+              <td>{{!!Ranking888[index] ? Ranking888[index].address  : '---'}}</td>
+              <td>{{!!Ranking888[index] ? Ranking888[index].number  : '---'}}</td>
+              <td>{{!!Ranking888[index] ? Ranking888[index].time  : '---'}}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="reightListBox" v-if="item.state">
+          <table>
+            <tr>
+              <th width="50%">用户</th>
+              <th width="50%">金额</th>
+            </tr>
+            <tr v-for="item2 in bonusList[index].data">
+              <td>{{item2.address || '---'}}</td>
+              <td>{{item2.number  || '---'}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
       &nbsp;
     </div>
-    <div class="rollingBox">
-      <div class="border3">
-        <p v-for="item in rollList">{{item}}</p>
-      </div>
-    </div>
+    <!--<div class="rollingBox">-->
+      <!--<div class="border3">-->
+        <!--<p v-for="item in rollList">{{item}}</p>-->
+      <!--</div>-->
+    <!--</div>-->
   </div>
 </template>
 
@@ -206,7 +239,121 @@ export default {
       ],
       refId: 0,
       selfId: 0,
-      rollList: ['第一轮 Liu***获得了第888位奖励' , '第一轮 All***成功夺得了最终奖池']
+      rollList: ['第一轮 Liu***获得了第888位奖励' , '第一轮 All***成功夺得了最终奖池'],
+      Ranking888: [ // 888 榜单数据列表轮次(888榜单只会有一个存在)
+        {
+          address: '0x29cf8f3bf87e03c6ddf2480b02a0e4140ad67011',
+          number: '0.71231123',
+          time: '2018-08-05'
+        },
+        {
+          address: '0x29cf8f3bf87e03c6ddf2480b02a0e4140ad67011',
+          number: '0.71231123',
+          time: '2018-08-05'
+        }
+      ],
+      bonusList: [ // 分红数据轮次
+        {// 第一轮
+          data: [//每一轮用户数据列表
+            {
+              address: '0x29cf8f3bf87e03c6ddf2480b02a0e4140ad67011',
+              number: '0.120000'
+            }
+          ]
+        },
+        {// 第二轮
+          data: [ //每一轮用户数据列表
+            {
+              address: '0x29cf8f3bf87e03c6ddf2480b02a0e4140ad67011',
+              number: '0.652221'
+            },
+            {//每一轮用户数据列表
+              address: '0x29cf8f3bf87e03c6ddf2480b02a0e4140ad67011',
+              number: '0.652221'
+            }
+          ]
+        },
+        {// 第三轮
+          data: [
+            {
+              address: '',
+              number: ''
+            }
+          ]
+        },
+        {// 第四轮
+          data: [
+            {
+              address: '',
+              number: ''
+            }
+          ]
+        },
+        {// 第五轮
+          data: [
+            {
+              address: '',
+              number: ''
+            }
+          ]
+        },
+        {// 第六轮
+          data: [
+            {
+              address: '',
+              number: ''
+            }
+          ]
+        },
+        {// 第七轮
+          data: [
+            {
+              address: '',
+              number: ''
+            }
+          ]
+        },
+        {// 第八轮
+          data: [
+            {
+              address: '',
+              number: ''
+            }
+          ]
+        },
+        {// 第九轮
+          data: [
+            {
+              address: '',
+              number: ''
+            }
+          ]
+        },
+        {// 第十轮
+          data: [
+            {
+              address: '',
+              number: ''
+            }
+          ]
+        },
+        {// 十一轮
+          data: [
+            {
+              address: '',
+              number: ''
+            }
+          ]
+        },
+        {// 十二轮
+          data: [
+            {
+              address: '',
+              number: ''
+            }
+          ]
+        }
+      ]
     }
   },
   mounted () {
@@ -334,12 +481,65 @@ export default {
       transform: translateY(0%);
     }
   }
+  .titBox{
+    width: 1260px;
+    margin: 0 auto;
+  }
+  .titBox div{
+    width: 50%;
+    text-align: center;
+    float: left;
+  }
+  .titBox h5{
+    font: normal 18px/50px 'Microsoft YaHei';
+    color: #fff;
+  }
   .border3{
     top: 0px;
     -webkit-animation:scrollText1 3s 1;
     animation:scrollText1 3s 1;
   }
-
+  .RankingBox{
+    width: 1280px;
+    height: auto;
+    margin: 20px auto;
+    position: relative;
+    overflow: hidden;
+  }
+  .RankingBox>div>table{
+    width: 100%;
+    font-size: 12px;
+    color: #fff;
+    background: #5c6596;
+  }
+  .RankingBox h5{
+    position: absolute;
+    top: 0px;
+    left: -2px;
+    width: 20px;
+    height: 20px;
+    background: rgba(255,255,255,.1);
+    color: #fff;
+    font-size: 16px;
+    border-radius: 50%;
+    line-height: 20px;
+    text-align: center;
+  }
+  .RankingBox table th{
+    line-height: 26px;
+    text-align: center;
+  }
+  .RankingBox table tr{
+    border: 1px #8c8787 solid;
+    line-height: 26px;
+    text-align: center;
+  }
+  .RankingBox>div{
+    width: 46%;
+    display: inline-block;
+    margin: 0 2% 20px;
+    float: left;
+  }
   .rollingBox{
     position: fixed;
     right: 30px;

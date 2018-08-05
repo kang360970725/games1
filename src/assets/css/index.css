@@ -30,8 +30,8 @@ body.en_index, body.index {
 }
 .position.time-number{
   width: 150px;
-  padding: 14px 0 0;
-  height: 84px;
+  /*padding: 14px 0 0;*/
+  height: 70px;
   float: left;
   display: block;
   background: -o-linear-gradient(rgba(43, 50, 100, 1), rgba(43, 50, 100, .7));
@@ -1287,12 +1287,12 @@ body, html {
 /*}*/
 
 .data-summary dt {
-  font-size: 14px;
+  font-size: 12px;
   color: rgba(255, 255, 255, .56)
 }
 
 .data-summary dd {
-  font-size: 16px;
+  font-size: 13px;
   font-family: roboto-thin;
   padding: 4px 0 5px;
   display: flex

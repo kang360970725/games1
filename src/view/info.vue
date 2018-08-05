@@ -113,7 +113,7 @@ export default {
   data: function () {
     return {
       type: '1', // tab切换
-      actState: true, // 邀请链接是否激活
+      actState: false, // 邀请链接是否激活
       InLink: 'https://fomo888.io', // 专属邀请链接
       comHtml: '', // 社群信息
       selfId: 0,

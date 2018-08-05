@@ -7,7 +7,8 @@ import router from '../router'
 let axiosRequset = axios.create({
   // baseURL: 'https://localhost:3000'
   // baseURL: 'https://103.71.51.222'
-  baseURL: 'https://103.71.51.230'
+  // baseURL: 'https://103.71.51.230'
+  baseURL: 'https://w1.fomo888.io'
   // baseURL: 'http://103.71.51.222:3000'
 })
 

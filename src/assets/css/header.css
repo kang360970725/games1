@@ -539,8 +539,8 @@
   float: left;
 }
 .gameList .gameListR{
-  width: 1095px;
-  padding: 8px 10px;
+  width: 1110px;
+  padding: 2px 5px;
   background: -o-linear-gradient(rgba(43, 50, 100, 1), rgba(43, 50, 100, .7));
   background: -webkit-gradient(linear, left top, left bottom, from(rgba(43, 50, 100, 1)), to(rgba(43, 50, 100, .7)));
   overflow: hidden;
@@ -550,22 +550,22 @@
 .gameList h5{
   position: absolute;
   top: 20px;
-  left: -70px;
-  width: 60px;
-  height: 60px;
+  left: -50px;
+  width: 40px;
+  height: 40px;
   background: rgba(255,255,255,.1);
   color: #fff;
-  font-size: 40px;
+  font-size: 20px;
   border-radius: 50%;
-  line-height: 60px;
+  line-height: 40px;
   text-align: center;
 }
 .data-summary-container {
   width: 180px;
-  margin: 0 5px 0;
+  margin: 10px 5px 0;
   /*background: rgba(0, 0, 0, .16);*/
   border: 1px solid rgba(74, 144, 226, .24);
-  padding: 15px 0;
+  padding: 5px 0;
   display: flex;
   position: relative;
   float: left;
