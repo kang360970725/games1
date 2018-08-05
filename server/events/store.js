@@ -45,7 +45,7 @@ function storeLuckyEvent(eve, block, txHash, category) {
   return new Promise((r, j) => {
     connection.query(sql, (err, results, fields) => {
       if (err) {
-        console.error(`fail to insert lucky event ${NETWORK}`, err)
+        console.error(`fail to insert lucky event ${category}`, err)
         j(err)
       } else {
         if (results.length === 0) {
@@ -112,7 +112,7 @@ function updateEventBlock(event, category, block) {
  * @param {*} NETWORK 
  */
 function storeBuyEvent(eve, block, tx, NETWORK) {
-  const sql = `INSERT INTO buy (buyer, bought, cost, round, block, tx, category) VALUES("${eve.buyer}", "${eve.keys}", "${eve.cost}", ${eve.round}, ${block}, "${tx}", "${NETWORK}")`
+  const sql = `INSERT INTO buy (buyer, bought, cost, round, block, tx, category) VALUES("${eve.buyer}", ${eve.keys}, ${eve.cost}, ${eve.round}, ${block}, "${tx}", "${NETWORK}")`
   console.log(sql)
   return new Promise((r, j) => {
     connection.query(sql, (err, results, fields) => {
@@ -120,11 +120,14 @@ function storeBuyEvent(eve, block, tx, NETWORK) {
         console.error(`fail to insert buy event ${NETWORK}`, err)
         j(err)
       } else {
-        if (results.length === 0) {
-          r(0)
-        } else {
-          r(0)
-        }
+        const procedure = `CALL findParent("${eve.buyer}", 0, ${eve.cost}, 0)`
+        connection.query(procedure, (err, reulsts, fields) => {
+          if (results.length === 0) {
+            r(0)
+          } else {
+            r(0)
+          }
+        })        
       }
     })
   })
@@ -146,19 +149,79 @@ function storeWithdrawalEvent(eve, block, tx, NETWORK) {
         console.error(`fail to insert withdrawal event ${NETWORK}`, err)
         j(err)
       } else {
-        if (results.length === 0) {
-          r(0)
-        } else {
-          r(0)
-        }
+        const procedure = `CALL findParent("${eve.player}", 0, 0, ${eve.amount})`
+        connection.query(procedure, (err, reulsts, fields) => {
+          if (results.length === 0) {
+            r(0)
+          } else {
+            r(0)
+          }
+        })
       }
     })
   })
 }
 
 function selectRandomPlayers(category) {
-  const sql = `SELECT DISTINCT buyer FROM buy where category = "${category}"`
-  
+  const sql = `SELECT DISTINCT buyer FROM buy where category = "${category}" ORDER BY RAND() LIMIT 20`
+  return new Promise((r, j) => {
+    connection.query(sql, (err, results, fields) => {
+      if (err) {
+        console.error(`fail to query random players of ${category}`)
+        j(err)
+      } else {
+        r(results)
+      }
+    })
+  })
+}
+
+function updateReferer(referral, id, category) {
+  const sql = `INSERT INTO referer (player, referer, category) VALUES("${referral}", ${id}, "${category}" ON DUPLICATE KEY UPDATE referer=${id})`
+  console.log(sql)
+  return new Promise((r, j) => {
+    connection.query(sql, (err, results, fields) => {
+      if (err) {
+        console.error(`fail to insert referer event ${category}`, err)
+        j(err)
+      } else {
+        const procedure = `CALL findParent("${referral}", 1, 0, 0)`
+        connection.query(procedure, (err, reulsts, fields) => {
+          if (results.length === 0) {
+            r(0)
+          } else {
+            r(0)
+          }
+        })
+      }
+    })
+  })
+}
+
+function updateRegister(user, id, referer, category) {
+  const sql = `INSERT INTO referer (player, refId, referer, category) VALUES("${user}", ${id}, ${referer}, "${category}" ON DUPLICATE KEY UPDATE refId=${id}, referer = ${referer})`
+  console.log(sql)
+  return new Promise((r, j) => {
+    connection.query(sql, (err, results, fields) => {
+      if (err) {
+        console.error(`fail to insert referer event ${category}`, err)
+        j(err)
+      } else {
+        if (referer !== 0) {
+          const procedure = `CALL findParent("${user}", 1, 0, 0)`
+          connection.query(procedure, (err, reulsts, fields) => {
+            if (results.length === 0) {
+              r(0)
+            } else {
+              r(0)
+            }
+          })
+        } else {
+          r(0)
+        }
+      }
+    })
+  })
 }
 
 function loadEventData(event, category) {
@@ -182,6 +245,9 @@ module.exports = {
   storeReferEvent,
   storeBuyEvent,
   storeWithdrawalEvent,
+  selectRandomPlayers,
   updateEventBlock,
+  updateReferer,
+  updateRegister,
   loadEventData
 }

@@ -2,7 +2,9 @@ const EVENTS = {
   REFERER: 'referer',
   LUCKY: 'lucky',
   BUY: 'buy',
-  WITHDRAWAL: 'withdrawal'
+  WITHDRAWAL: 'withdrawal',
+  REFERER: 'referer',
+  REGISTER: 'register'
 }
 
 module.exports = EVENTS

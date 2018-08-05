@@ -134,4 +134,53 @@ async function initWithdrawalEvents(fp3d, latest) {
       }
     })
 }
+
+async function initRefererEvents(fp3d, latest) {
+  let fromBlock = await Store.curBlock(EVENTS.REFERER, NETWORK)
+  if (fromBlock === 0) {
+    fromBlock = await Store.startBlock(EVENTS.REFERER, NETWORK)
+  }
+
+  return fp3d.getPastEvents('Referer', { fromBlock, toBlock:latest})
+    .then(async events => {
+      try {
+          events.forEach(async eve => {
+            let block = eve.blockNumber
+            let tx = eve.transactionHash
+            eve = eve.returnValues
+            let { referral, pUser } = eve
+
+            await Store.updateReferer(referral, pUser, NETWORK)
+          })
+          return await Store.updateEventBlock(EVENTS.REGISTER, NETWORK, latest)
+      } catch (err) {
+        console.error(err)
+      }
+    })
+}
+
+async function initRegisterEvents(fp3d, latest) {
+  let fromBlock = await Store.curBlock(EVENTS.REGISTER, NETWORK)
+  if (fromBlock === 0) {
+    fromBlock = await Store.startBlock(EVENTS.REGISTER, NETWORK)
+  }
+
+  return fp3d.getPastEvents('Register', { fromBlock, toBlock:latest})
+    .then(async events => {
+      try {
+          events.forEach(async eve => {
+            let block = eve.blockNumber
+            let tx = eve.transactionHash
+            eve = eve.returnValues
+            let { user, id } = eve
+
+            await Store.updateRegister(user, id, NETWORK)
+          })
+          return await Store.updateEventBlock(EVENTS.REGISTER, NETWORK, latest)
+      } catch (err) {
+        console.error(err)
+      }
+    })
+}
+
 module.exports = Init

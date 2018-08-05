@@ -42,8 +42,22 @@ router.get('/fp3d/luckies', async (ctx, next) => {
   }
 })
 
-router.get('/fp3d/r_players', async (ctx, next) => {
-  
+router.get('/fp3d/random_players', async (ctx, next) => {
+  ctx.response.type = 'json'
+  let players = []
+  try {
+    players = await store.selectRandomPlayers(NETWORK)
+    ctx.response.body = {
+      code: 0,
+      data: players.map(t => {return t.buyer })
+    }
+  } catch (err) {
+    console.error(`fail to get luckies data`, err)
+    ctx.response.body = {
+      code: errors.UNKNOWN_ERROR,
+      data: players
+    }
+  }
 })
 module.exports = router
 
