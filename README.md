@@ -158,3 +158,29 @@ CREATE TABLE withdrawal (
 | tx    | VARCHAR(100) | 交易hash |
 | category  | CHAR(20) | 网络 |
 
+### group 团长表
+
+CREATE TABLE group (
+  id INT NOT NULL AUTO_INCREMENT,
+  player VARCHAR(80),
+  refId INT,
+  refPlayers INT,
+  refBuy  VARCHAR(80),
+  refWithdrawal VARCHAR(80),
+  category CHAR(20) NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE (tx),
+  UNIQUE (address),
+  UNIQUE (refId)
+);
+
+| property | type | extra |
+|----------|------|-------|
+|  id      | INT | 自增主键 |
+|  player   | VARCHAR(80) | 玩家地址 |
+| refId | INT | 玩家自身推荐编号 |
+| refPlayers | INT | 推荐人总数 |
+| refBuy | VARCHAR(80) | 推荐入金总数 |
+| refWithdrawal | VARCHAR(80) | 推荐提现总数 |
+| category  | CHAR(20) | 网络 |
+
