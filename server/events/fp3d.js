@@ -17,19 +17,23 @@ async function Init(fp3d, web3) {
     console.log(`gather data in new round`)
     latestBlock = await web3.eth.getBlockNumber()
     console.log(`init with latest block`, latestBlock)
-    initReferEvents(fp3d, latestBlock)
+    await initReferEvents(fp3d, latestBlock)
       .catch(err => {
         console.log(`fail to load refer events`, err)
       })
-    initLuckyEvents(fp3d, latestBlock)
+    await initLuckyEvents(fp3d, latestBlock)
       .catch(err => {
         console.log(`fail to load lucky events`, err)
       })
-    initBuyEvents(fp3d, latestBlock)
+    await initBuyEvents(fp3d, latestBlock)
       .catch(err => {
         console.log(`fail to load buy events`, err)
       })
-    initWithdrawalEvents(fp3d, latestBlock)
+    await initWithdrawalEvents(fp3d, latestBlock)
+      .catch(err => {
+        console.log(`fail to load withdrawal events`, err)
+      })
+    await initRegisterEvents(fp3d, latestBlock)
       .catch(err => {
         console.log(`fail to load withdrawal events`, err)
       })
@@ -134,4 +138,53 @@ async function initWithdrawalEvents(fp3d, latest) {
       }
     })
 }
+
+async function initRefererEvents(fp3d, latest) {
+  let fromBlock = await Store.curBlock(EVENTS.REFERER, NETWORK)
+  if (fromBlock === 0) {
+    fromBlock = await Store.startBlock(EVENTS.REFERER, NETWORK)
+  }
+
+  return fp3d.getPastEvents('Referer', { fromBlock, toBlock:latest})
+    .then(async events => {
+      try {
+          events.forEach(async eve => {
+            let block = eve.blockNumber
+            let tx = eve.transactionHash
+            eve = eve.returnValues
+            let { referral, pUser } = eve
+
+            await Store.updateReferer(referral, pUser, NETWORK)
+          })
+          return await Store.updateEventBlock(EVENTS.REGISTER, NETWORK, latest)
+      } catch (err) {
+        console.error(err)
+      }
+    })
+}
+
+async function initRegisterEvents(fp3d, latest) {
+  let fromBlock = await Store.curBlock(EVENTS.REGISTER, NETWORK)
+  if (fromBlock === 0) {
+    fromBlock = await Store.startBlock(EVENTS.REGISTER, NETWORK)
+  }
+
+  return fp3d.getPastEvents('Register', { fromBlock, toBlock:latest})
+    .then(async events => {
+      try {
+          events.forEach(async eve => {
+            let block = eve.blockNumber
+            let tx = eve.transactionHash
+            eve = eve.returnValues
+            let { user, id } = eve
+
+            await Store.updateRegister(user, id, NETWORK)
+          })
+          return await Store.updateEventBlock(EVENTS.REGISTER, NETWORK, latest)
+      } catch (err) {
+        console.error(err)
+      }
+    })
+}
+
 module.exports = Init

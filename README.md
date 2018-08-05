@@ -68,7 +68,7 @@ CREATE TABLE lucky (
   buyer VARCHAR(80),
   round INT,
   lucky INT,
-  amount BIGINT,
+  amount DECIMAL(30, 0),
   category CHAR(20) NOT NULL,
   block BIGINT,
   tx VARCHAR(100),
@@ -82,7 +82,7 @@ CREATE TABLE lucky (
 | id | INT | 自增主键 |
 | buyer | VARCHAR(80) | 中奖人地址 |
 | round | INT | 轮次 (0开始) |
-| lucky | INT | 幸运数（888，1776等） |
+| lucky | DECIMAL(30, 0) | 幸运数（888，1776等） |
 | amount | BIGINT | 中奖奖金 (eth * 10^18) |
 | category | CHAR(20) | 网络 |
 | block | BIGINT | block号 |
@@ -113,8 +113,8 @@ CREATE TABLE referer (
 CREATE TABLE buy (
   id INT NOT NULL AUTO_INCREMENT,
   buyer VARCHAR(80),
-  bought VARCHAR(80),
-  cost VARCHAR(80),
+  bought DECIMAL(30, 0),
+  cost DECIMAL(30, 0),
   round INT,
   block BIGINT,
   category CHAR(20) NOT NULL,
@@ -127,8 +127,8 @@ CREATE TABLE buy (
 |---| -----| --- |
 | id | INT | 自增主键 |
 | buyer | VARCHAR(80) | 买家地址 |
-| bought | VARCHAR(80) | 购买key数量 |
-| cost | VARCHAR(80) | 花费eth数量 |
+| bought | DECIMAL(30, 0) | 购买key数量 |
+| cost | DECIMAL(30, 0) | 花费eth数量 |
 | category | CHAR(20) | 网络 |
 | round | INT | 轮次 |
 | block | BIGINT | block号 |
@@ -139,8 +139,8 @@ CREATE TABLE buy (
 CREATE TABLE withdrawal (
   id INT NOT NULL AUTO_INCREMENT,
   player VARCHAR(80),
-  amount VARCHAR(80),
-  fee VARCHAR(80),
+  amount DECIMAL(30, 0),
+  fee DECIMAL(30, 0),
   block BIGINT,
   category CHAR(20) NOT NULL,
   tx VARCHAR(100),
@@ -152,8 +152,8 @@ CREATE TABLE withdrawal (
 |----------|------|-------|
 |  id      | INT | 自增主键 |
 |  player   | VARCHAR(80) | 玩家地址 |
-| amount | VARCHAR(80) | 提现数量 |
-| fee    | VARCHAR(80) | 手续费 |
+| amount | DECIMAL(30, 0) | 提现数量 |
+| fee    | DECIMAL(30, 0) | 手续费 |
 | block  | BIGINT | block号 |
 | tx    | VARCHAR(100) | 交易hash |
 | category  | CHAR(20) | 网络 |
@@ -165,8 +165,8 @@ CREATE TABLE g_stat (
   player VARCHAR(80),
   refId INT,
   refPlayers INT,
-  refBuy  VARCHAR(80),
-  refWithdrawal VARCHAR(80),
+  refBuy  DECIMAL(30, 0),
+  refWithdrawal DECIMAL(30, 0),
   category CHAR(20) NOT NULL,
   PRIMARY KEY (id),
   UNIQUE (player),
@@ -183,3 +183,39 @@ CREATE TABLE g_stat (
 | refWithdrawal | VARCHAR(80) | 推荐提现总数 |
 | category  | CHAR(20) | 网络 |
 
+
+## 两个存储过程
+```
+DELIMITER //
+CREATE DEFINER=`jerry` PROCEDURE `updateGroup`(IN id INT, IN players INT, IN amount DECIMAL(30, 0), IN withdrawal DECIMAL(30, 0), IN category CHAR(20))
+BEGIN
+DECLARE player_addr VARCHAR(80);
+SET player_addr := (select player from referer where refId=id);
+if player_addr is not null 
+then
+  INSERT INTO g_stat (player, refId, refPlayers, refBuy, refWithdrawal, category) values (player_addr, id, players, amount, withdrawal, category) ON DUPLICATE KEY UPDATE refBuy = refBuy + amount, refWithdrawal = refWithdrawal + withdrawal, refPlayers = refPlayers + players;
+end if;
+END//
+DELIMITER ;
+
+DELIMITER //
+CREATE DEFINER=`jerry` PROCEDURE `findParent`(IN addr VARCHAR(80), IN players INT, IN amount DECIMAL(30, 0), IN withdrawal DECIMAL(30, 0), IN category CHAR(20))
+BEGIN
+DECLARE b INT;
+DECLARE t_pid CURSOR FOR select referer from referer  where player=addr;
+set @done=0;
+OPEN t_pid;
+FETCH t_pid INTO b;
+if b <=0 or b is null
+ then set @done =1;
+else
+  CALL updateGroup(b, players, amount, withdrawal, category);
+end if;
+
+WHILE (@done = 0)
+DO
+ CALL findParent(b);
+END WHILE;
+END//
+DELIMITER ;
+```
