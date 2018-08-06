@@ -224,3 +224,69 @@ end if;
 END//
 DELIMITER ;
 ```
+
+
+## server端API
+
+1. 幸运奖数据
+
+    GET /fp3d/luckies
+
+    http://localhost:4357/fp3d/luckies
+
+  
+    ```
+    {
+      "code": 0,
+      "data": [
+          {
+            "id": 11,
+            "buyer": "0x3bB110A6e5Df7873775Cde1A2D08805c2539Ee69",  //中奖玩家
+            "round": 1,                                   //中奖轮次，0开始
+            "lucky": 10,                                  //中奖号
+            "amount": 3802635658929291,                   //中奖数量
+            "category": "3",
+            "block": 3774751,                             //中奖block
+            "tx": "0x9e4c654c78633b829665f7ec3ee41253fe0104415b29c1a426f6a148da1f308f"                                        //中奖交易
+          },  
+          {
+            "id": 12,
+            "buyer": "0x3bB110A6e5Df7873775Cde1A2D08805c2539Ee69",
+            "round": 1,
+            "lucky": 20,
+            "amount": 46467815255687900,
+            "category": "3",
+            "block": 3774813,
+            "tx": "0x03abd0de95da1100867104a06c4e63ab023ecd971adde6b2fef00b879a6d38e6"
+          }
+      ]
+    }
+    ```
+
+2. 团长数据
+
+  GET /fp3d/g_stat?player={player address}
+  
+  http://localhost:4357/fp3d/g_stat?player=0x92694d5c7e2655e3f358130ebd0e7Db3FbD3e455
+
+
+  返回结果:
+
+  
+  ```
+  {
+    "code": 0,
+    "data": {
+        "id": 21,
+        "player": "0x92694d5c7e2655e3f358130ebd0e7Db3FbD3e455",
+        "refId": 1,
+        "refPlayers": 1,          //共推荐玩家
+        "refBuy": 0,              //推荐玩家入金
+        "refWithdrawal": 0,       //推荐玩家出金
+        "category": "3"
+    }
+  }
+  ```
+
+3. 
+
