@@ -265,28 +265,44 @@ DELIMITER ;
 
 2. 团长数据
 
-  GET /fp3d/g_stat?player={player address}
-  
-  http://localhost:4357/fp3d/g_stat?player=0x92694d5c7e2655e3f358130ebd0e7Db3FbD3e455
+    GET /fp3d/g_stat?player={player address}
+    
+    http://localhost:4357/fp3d/g_stat?player=0x92694d5c7e2655e3f358130ebd0e7Db3FbD3e455
 
 
-  返回结果:
+    返回结果:
 
-  
-  ```
-  {
-    "code": 0,
-    "data": {
-        "id": 21,
-        "player": "0x92694d5c7e2655e3f358130ebd0e7Db3FbD3e455",
-        "refId": 1,
-        "refPlayers": 1,          //共推荐玩家
-        "refBuy": 0,              //推荐玩家入金
-        "refWithdrawal": 0,       //推荐玩家出金
-        "category": "3"
+    
+    ```
+    {
+      "code": 0,
+      "data": {
+          "id": 21,
+          "player": "0x92694d5c7e2655e3f358130ebd0e7Db3FbD3e455",
+          "refId": 1,
+          "refPlayers": 1,          // 共推荐玩家
+          "refBuy": 0,              // 推荐玩家入金
+          "refWithdrawal": 0,       // 推荐玩家出金
+          "category": "3"
+      }
     }
-  }
-  ```
+    ```
 
-3. 
+3. 随机玩家列表
 
+    GET /fp3d/random_players
+
+    http://localhost:4357/fp3d/random_players
+
+    返回结果:
+
+    ```
+    {
+      "code": 0,
+      "data": [
+        "0x92694d5c7e2655e3f358130ebd0e7Db3FbD3e455",
+        "0x29CF8F3Bf87E03c6ddF2480B02a0e4140Ad67011",
+        "0x3bB110A6e5Df7873775Cde1A2D08805c2539Ee69"
+        ]
+    }
+    ```
