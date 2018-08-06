@@ -177,7 +177,7 @@ function selectRandomPlayers(category) {
 }
 
 function updateReferer(referral, id, category) {
-  const sql = `INSERT INTO referer (player, referer, category) VALUES("${referral}", ${id}, "${category}" ON DUPLICATE KEY UPDATE referer=${id})`
+  const sql = `INSERT INTO referer (player, referer, category) VALUES("${referral}", ${id}, "${category}") ON DUPLICATE KEY UPDATE referer=${id})`
   console.log(sql)
   return new Promise((r, j) => {
     connection.query(sql, (err, results, fields) => {
