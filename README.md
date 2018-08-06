@@ -246,7 +246,7 @@ DELIMITER ;
             "lucky": 10,                                  //中奖号
             "amount": 3802635658929291,                   //中奖数量
             "category": "3",
-            "block": 3774751,                             //中奖block
+            "block": 3774751,                             //中奖 block
             "tx": "0x9e4c654c78633b829665f7ec3ee41253fe0104415b29c1a426f6a148da1f308f"                                        //中奖交易
           },  
           {
