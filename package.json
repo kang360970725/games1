@@ -4,6 +4,10 @@
   "description": "A Vue.js project",
   "author": "",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:kang360970725/games1.git"
+  },
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
