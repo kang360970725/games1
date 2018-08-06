@@ -187,35 +187,40 @@ CREATE TABLE g_stat (
 ## 两个存储过程
 ```
 DELIMITER //
-CREATE DEFINER=`jerry` PROCEDURE `updateGroup`(IN id INT, IN players INT, IN amount DECIMAL(30, 0), IN withdrawal DECIMAL(30, 0), IN category CHAR(20))
+CREATE PROCEDURE `updateGroup`(IN id INT, IN players INT, IN amount DECIMAL(30, 0), IN withdrawal DECIMAL(30, 0), IN category CHAR(20))
 BEGIN
 DECLARE player_addr VARCHAR(80);
+DECLARE player_ref INT;
+SET max_sp_recursion_depth=255;
+SET @done = 0;
+
 SET player_addr := (select player from referer where refId=id);
-if player_addr is not null 
+if player_addr is null 
 then
+  set @done = 1;
+else
   INSERT INTO g_stat (player, refId, refPlayers, refBuy, refWithdrawal, category) values (player_addr, id, players, amount, withdrawal, category) ON DUPLICATE KEY UPDATE refBuy = refBuy + amount, refWithdrawal = refWithdrawal + withdrawal, refPlayers = refPlayers + players;
 end if;
+
+WHILE(@done = 0)
+DO
+  SET player_ref := (select referer from referer where refId=id);
+  CALL updateGroup(player_ref, players, amount, withdrawal, category);
+END WHILE;
 END//
 DELIMITER ;
 
 DELIMITER //
-CREATE DEFINER=`jerry` PROCEDURE `findParent`(IN addr VARCHAR(80), IN players INT, IN amount DECIMAL(30, 0), IN withdrawal DECIMAL(30, 0), IN category CHAR(20))
+CREATE PROCEDURE `findParent`(IN addr VARCHAR(80), IN players INT, IN amount DECIMAL(30, 0), IN withdrawal DECIMAL(30, 0), IN category CHAR(20))
 BEGIN
 DECLARE b INT;
 DECLARE t_pid CURSOR FOR select referer from referer  where player=addr;
-set @done=0;
 OPEN t_pid;
 FETCH t_pid INTO b;
-if b <=0 or b is null
- then set @done =1;
-else
-  CALL updateGroup(b, players, amount, withdrawal, category);
+if b is not null AND b > 0
+then 
+ CALL updateGroup(b, players, amount, withdrawal, category);
 end if;
-
-WHILE (@done = 0)
-DO
- CALL findParent(b);
-END WHILE;
 END//
 DELIMITER ;
 ```

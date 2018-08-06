@@ -199,7 +199,7 @@ function updateReferer(referral, id, category) {
 }
 
 function updateRegister(user, id, referer, category) {
-  const sql = `INSERT INTO referer (player, refId, referer, category) VALUES("${user}", ${id}, ${referer}, "${category}") ON DUPLICATE KEY UPDATE refId=${id}, referer = ${referer})`
+  const sql = `INSERT INTO referer (player, refId, referer, category) VALUES("${user}", ${id}, ${referer}, "${category}") ON DUPLICATE KEY UPDATE refId=${id}, referer = ${referer}`
   console.log(sql)
   return new Promise((r, j) => {
     connection.query(sql, (err, results, fields) => {
