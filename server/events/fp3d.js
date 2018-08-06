@@ -176,9 +176,9 @@ async function initRegisterEvents(fp3d, latest) {
             let block = eve.blockNumber
             let tx = eve.transactionHash
             eve = eve.returnValues
-            let { user, id } = eve
+            let { user, id, ref } = eve
 
-            await Store.updateRegister(user, id, NETWORK)
+            await Store.updateRegister(user, id, ref, NETWORK)
           })
           return await Store.updateEventBlock(EVENTS.REGISTER, NETWORK, latest)
       } catch (err) {
