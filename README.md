@@ -306,3 +306,21 @@ DELIMITER ;
         ]
     }
     ```
+
+
+## 更新合约方法
+
+1. 部署新合约，记录合约地址 addr和创建合约的块号 block
+2. 更新src/lib/deployed.js里的fp3dM (addr) 和fp3dM_deploy (block) , 测试网络填入"3"下，正式网络填入"1"下
+3. npm run build重新打包前端代码
+4. 清除数据库
+
+    ```
+    delete from buy;
+    delete from g_stat;
+    delete from lucky;
+    delete from withdrawal;
+    delete from referer;
+    delete from status;
+    ```
+5. 重启server，重启事件爬取脚本
