@@ -324,3 +324,5 @@ DELIMITER ;
     delete from status;
     ```
 5. 重启server，重启事件爬取脚本
+
+3，4，5已经一起合到run.sh里了
