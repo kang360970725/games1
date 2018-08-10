@@ -3,7 +3,7 @@
 const mysql      = require('mysql');
 const dbConf = require("../../config/db.config.json")
 
-const connection = mysql.createPool(dbConf);
+const connection = mysql.createConnection(dbConf);
 
 const _startBlocks = require('../../src/lib/deployed').fp3dM_deploy
 

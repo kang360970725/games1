@@ -17,14 +17,16 @@ async function Init(fp3d, web3) {
     console.log(`gather data in new round`)
     latestBlock = await web3.eth.getBlockNumber()
     console.log(`init with latest block`, latestBlock)
+    /*
     await initReferEvents(fp3d, latestBlock)
       .catch(err => {
         console.log(`fail to load refer events`, err)
-      })
+      })*/
     await initLuckyEvents(fp3d, latestBlock)
       .catch(err => {
         console.log(`fail to load lucky events`, err)
       })
+      /*
     await initBuyEvents(fp3d, latestBlock)
       .catch(err => {
         console.log(`fail to load buy events`, err)
@@ -36,7 +38,7 @@ async function Init(fp3d, web3) {
     await initRegisterEvents(fp3d, latestBlock)
       .catch(err => {
         console.log(`fail to load withdrawal events`, err)
-      })
+      })*/
     await new Promise((r, j) => {
       setTimeout(r, 5 * 30 * 1000)
     })
@@ -77,11 +79,12 @@ async function initLuckyEvents(fp3d, latest) {
     .then(async events => {
       try {
           events.forEach(async eve => {
+            console.log(eve)
             let block = eve.blockNumber
             let tx = eve.transactionHash
             eve = eve.returnValues
             let { buyer, round, lucky, acmount } = eve
-
+            
             await Store.storeLuckyEvent(eve, block, tx, NETWORK)
           })
           return await Store.updateEventBlock(EVENTS.LUCKY, NETWORK, latest)
