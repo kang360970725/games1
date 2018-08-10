@@ -1,7 +1,7 @@
 import request from '@/axios'
 
-export function luckies(network) {
-  return request({
+export function luckies (network) {
+  return request.axiosRequset({
     url: `/fp3d/luckies`,
     method: 'get'
   })
@@ -16,7 +16,7 @@ export function luckies(network) {
 }
 
 export function players(network) {
-  return request({
+  return request.axiosRequset({
     url: `/fp3d/random_players`,
     method: 'get'
   })

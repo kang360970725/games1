@@ -22,8 +22,6 @@ const current = process.env.NETWORK
 web3.setProvider(new web3.providers.HttpProvider(`https://${networkMap[current]}.infura.io/vAugb8H4cG1bOuFMZj3y`))
 
 // RopstenWeb3.setProvider(new RopstenWeb3.providers.HttpProvider(`https://ropsten.infura.io/vAugb8H4cG1bOuFMZj3y`))
-
-
 /*
 Fp3d.getFp3d(web3)
     .then(_fp3c => {

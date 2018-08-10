@@ -13,7 +13,9 @@
       <ul>
         <li><a href="/">{{$t('common.home')}}</a></li>
         <li><a href="/help?type=notice">{{$t('common.notice')}}</a></li>
-        <li><a href="/info">{{$t('userinfo.nav1Txt1')}}</a></li>
+        <li><a target="_blank" href="https://ropsten.etherscan.io/tx/0x10b3d03ab602800f4ea20bc786ba59ad8cdbea27fae03959f5b76296f082dee1">{{$t('common.contract')}}</a></li>
+        <li><a href="/info?s=c">{{$t('userinfo.nav1Txt1')}}</a></li>
+        <li v-if="admin"><a href="/admin?a=b">公告管理</a></li>
       </ul>
     </div>
     <div class="r header-operate-container">
@@ -21,12 +23,12 @@
         <a class="" href="/info?t=s" :title="$t('common.community')">{{$t('common.community')}}</a>
       </div>
       <div class="operate-right">
-        <a class="" href="/help" :title="$t('common.help')">{{$t('common.help')}}</a>
+        <a class="" href="/help?s=c" :title="$t('common.help')">{{$t('common.help')}}</a>
       </div>
       <div class="operate-right account-container to-login">  <!--已登录-->
         <!--<a title="">Welcome,&nbsp;&nbsp;{{user.userName}}</a>-->
         <!--<b class="line"></b>-->
-        <a href="/info" :title="$t('common.userinfo')">{{$t('common.userinfo')}}</a>
+        <a href="/info?s=c" :title="$t('common.userinfo')">{{$t('common.userinfo')}}</a>
         <b class="line"></b>
         <!--<a @click="logout()" :title="$t('common.exit')">{{$t('common.exit')}}</a>-->
       </div>
@@ -50,12 +52,19 @@ export default {
   name: 'headers',
   data: function () {
     return {
-      user: ''
+      user: '',
+      admin: false
     }
   },
   mounted () {
     if (!!localStorage.userInfo) {
       this.user = JSON.parse(localStorage.userInfo)
+    }
+    let address = sessionStorage.address
+    if (address == '0x8470FFfbfDb4F3d1986163edBDb2018C75D8b31F') {
+      this.admin = true
+    } else {
+      this.admin = false
     }
   },
   methods: {

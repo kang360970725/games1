@@ -8,6 +8,7 @@
             <li :class="type == 2 ? 'curr' : ''" @click="type = 2">{{$t('userinfo.nav2')}}</li>
             <li :class="type == 3 ? 'curr' : ''" @click="type = 3">{{$t('userinfo.nav3')}}</li>
             <li :class="type == 4 ? 'curr' : ''" @click="type = 4">{{$t('userinfo.nav4')}}</li>
+            <li :class="type == 5 ? 'curr' : ''" @click="type = 5" v-if="actState">{{$t('userinfo.nav5')}}</li>
           </ul>
         </div>
         <div class="contentBox">
@@ -29,7 +30,7 @@
             <div v-if="actState">
               <label>
                 <span>{{$t('userinfo.nav1Txt1')}} : </span>
-                <span>{{InLink}} &nbsp;&nbsp;&nbsp; <a style="color: #49dc93;" @click="copyCodeFn">复制</a></span>
+                <span>{{InLink}} &nbsp;&nbsp;&nbsp; <a style="color: #49dc93;" @click="copyCodeFn">{{$t('userinfo.nav1TxtCopy')}}</a></span>
               </label>
               <br>
               <table class="ordersTab">
@@ -55,7 +56,7 @@
             <label>
               <span>{{$t('userinfo.nav2Txt')}}:</span>
               <input type="text" disabled="disabled" v-model="balance" placeholder="0.0000"/>
-              <button @click="withdrawal(context.address)" class="button">提现</button>
+              <button @click="withdrawal(context.address)" class="button">{{$t('userinfo.nav2TxtWithdraw')}}</button>
             </label>
             <br>
             <br>
@@ -92,6 +93,17 @@
             <div v-html="comHtml">
             </div>
           </div>
+          <div class="Invitation-info" v-show="type == 5 && actState">
+            <p class="title">{{$t('userinfo.nav5')}}</p><br/>
+            <div>
+              <label>
+                <span>{{$t('userinfo.nav1Txt3')}} : </span>
+                <span>{{linkDataAll.number}} &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<br/><br/>
+                  {{$t('userinfo.nav1Txt5')}} :{{linkDataAll.goldNum}}<br/><br/>
+                  {{$t('userinfo.nav1Txt4')}} :{{linkDataAll.outNum}}</span>
+              </label>
+            </div>
+          </div>
         </div>
       </div>
       <div id="biao1" style="display: none;"></div>
@@ -104,6 +116,7 @@ import headers from '../components/header'
 const etherEnv = require('@/lib/etherEnv')
 const fp3dMod = require('@/lib/fp3d_mod')
 const async = require('async')
+const api = require('@/api/backend')
 
 export default {
   components: {
@@ -129,6 +142,11 @@ export default {
         userInfo: 'Liu***',
         bonus: '0.00'
       }],
+      linkDataAll: {
+        number: 0, // 总人数
+        outNum: 0, // 出金
+        goldNum: 0 // 入金
+      },
       orders: [   //每轮购买数据
         {
           num: 1, //第几轮
@@ -274,7 +292,7 @@ export default {
         })
     },
     refUrl(refId) {
-      return `http://www.fomo888.com/r=${refId}`
+      return `https://fomo888.io?r=${refId}`
     },
     withdrawal(address) {
       return this.context.fp3d.withdrawal(address)
@@ -305,10 +323,24 @@ export default {
         type: 2,
         lang: localStorage.lang === 'zh' ? 0 : 1
       }
-      _this.$axios.post('/getnoticelist', obj).then(function (result) {
+      _this.$newAxios.post('/getnoticelist', obj).then(function (result) {
         let data = result.data || result
         if (result.code === 0) {
           _this.comHtml = data[0].content
+        } else {
+          // alert(data.msg)
+        }
+      }).catch(function (err) {
+        console.log(err)
+      })
+
+
+      _this.$axios.get('/fp3d/g_stat').then(function (result) {
+        let data = result.data || result
+        if (result.code === 0) {
+          _this.linkDataAll.number = data.refPlayers
+          _this.linkDataAll.goldNum = data.refBuy
+          _this.linkDataAll.outNum = data.refWithdrawal
         } else {
           // alert(data.msg)
         }

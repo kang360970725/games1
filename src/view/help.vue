@@ -51,7 +51,7 @@ export default {
         type: _this.type,
         lang: localStorage.lang === 'zh' ? 0 : 1
       }
-      _this.$axios.post('/getnoticelist', obj).then(function (result) {
+      _this.$newAxios.post('/getnoticelist', obj).then(function (result) {
         let data = result.data || result
         if (result.code === 0) {
           _this.content = data[0].content

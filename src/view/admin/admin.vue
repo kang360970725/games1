@@ -177,6 +177,9 @@ export default {
   },
   mounted () {
     let _this = this
+    if (sessionStorage.address != '0x8470FFfbfDb4F3d1986163edBDb2018C75D8b31F') {
+      window.location.href = '/'
+    }
     _this.initDataList()
   },
   methods: {
@@ -185,7 +188,7 @@ export default {
       let obj = {
         type: 3
       }
-      _this.$axios.post('/getnoticelist', obj).then(function (result) {
+      _this.$newAxios.post('/getnoticelist', obj).then(function (result) {
         let data = result.data || result
         if (result.code === 0) {
           _this.dataList = data;
@@ -203,7 +206,7 @@ export default {
         lang: _this.lang,
         content: _this.content
       }
-      _this.$axios.post('/editnotice', obj).then(function (result) {
+      _this.$newAxios.post('/editnotice', obj).then(function (result) {
         let data = result.data || result
         if (result.code === 0) {
           _this.addstate = false
@@ -221,7 +224,7 @@ export default {
       let obj = {
         id: id
       }
-      _this.$axios.post('/delnotice', obj).then(function (result) {
+      _this.$newAxios.post('/delnotice', obj).then(function (result) {
         let data = result.data || result
         if (result.code === 0) {
           _this.initDataList()

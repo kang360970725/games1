@@ -64,7 +64,7 @@
         <div><h5>分红榜单</h5></div>
       </div>
       <div class="RankingBox" v-for="(item,index) in gameList" v-show="item.state">
-        <h5>第{{index + 1 }}轮</h5>
+        <h5>{{index + 1 }}</h5>
         <div class="leftListBox" v-if="item.state">
           <table>
             <tr>
@@ -72,10 +72,15 @@
               <th width="33%">金额</th>
               <th width="33%">交易</th>
             </tr>
-            <tr>
-              <td>{{!!Ranking888[index] ? Ranking888[index].address  : '---'}}</td>
-              <td>{{!!Ranking888[index] ? Ranking888[index].number  : '---'}}</td>
-              <td>{{!!Ranking888[index] ? Ranking888[index].tx.substr(0, 5) + '...'  : '---'}}</td>
+            <tr v-for="item1 in Ranking888[index].data">
+              <td>{{item1.address || '---'}}</td>
+              <td>{{item1.number}}</td>
+              <td>{{item1.tx.substr(0, 5) || '---'}}</td>
+            </tr>
+            <tr v-if="Ranking888[index].data.length <= 0">
+              <td>---</td>
+              <td>---</td>
+              <td>---</td>
             </tr>
           </table>
         </div>
@@ -87,7 +92,11 @@
             </tr>
             <tr v-for="item2 in bonusList[index].data">
               <td>{{item2.address || '---'}}</td>
-              <td>{{item2.number  || '---'}}</td>
+              <td>{{item2.number}}</td>
+            </tr>
+            <tr v-if="bonusList[index].data.length <= 0">
+              <td>---</td>
+              <td>---</td>
             </tr>
           </table>
         </div>
@@ -244,43 +253,65 @@ export default {
       rollList: ['第一轮 Liu***获得了第888位奖励' , '第一轮 All***成功夺得了最终奖池'],
       Ranking888: [ // 888 榜单数据列表轮次(888榜单只会有一个存在)
         {
-          address: null,
-          number: null,
-          tx: "",
+          id: 1,
+          data: []
         },
         {
-          address: null,
-          number: null,
-          tx: ""
+          id: 2,
+          data: []
+        },
+        {
+          id: 3,
+          data: []
+        },
+        {
+          id: 4,
+          data: []
+        },
+        {
+          id: 5,
+          data: []
+        },
+        {
+          id: 6,
+          data: []
+        },
+        {
+          id: 7,
+          data: []
+        },
+        {
+          id: 8,
+          data: []
+        },
+        {
+          id: 9,
+          data: []
+        },
+        {
+          id: 10,
+          data: []
+        },
+        {
+          id: 11,
+          data: []
+        },
+        {
+          id: 12,
+          data: []
         }
       ],
       bonusList: [ // 分红数据轮次
         {// 第一轮
           data: [//每一轮用户数据列表
-            {
-              address: '0x29cf8f3bf87e03c6ddf2480b02a0e4140ad67011',
-              number: '0.120000'
-            }
           ]
         },
         {// 第二轮
-          data: [ //每一轮用户数据列表
-            {
-              address: '0x29cf8f3bf87e03c6ddf2480b02a0e4140ad67011',
-              number: '0.652221'
-            },
-            {//每一轮用户数据列表
-              address: '0x29cf8f3bf87e03c6ddf2480b02a0e4140ad67011',
-              number: '0.652221'
-            }
+          data: [ //每一轮用户数据列表,
           ]
         },
         {// 第三轮
           data: [
-            {
-              address: '',
-              number: ''
-            }
           ]
         },
         {// 第四轮
@@ -366,6 +397,7 @@ export default {
     }
     etherEnv.Init(window.web3)
       .then(cxt => {
+        sessionStorage.setItem('address', cxt.address)
         _this.context = cxt
         return fp3dMod.getFp3d(cxt.web3)
       })
@@ -378,8 +410,10 @@ export default {
       })
       .then(() => {
         _this.updateLuckies()
+        _this.updateRandomPlayers()
         setInterval(() => {
           _this.updateLuckies()
+          _this.updateRandomPlayers()
         }, 5 * 60 * 1000)
       })
       .catch(err => {
@@ -471,11 +505,50 @@ export default {
       return api.luckies(this.context.network)
         .then(_luckies => {
           _luckies.forEach(_lucky => {
+            console.log(_lucky);
             let _round = _lucky.round
-            this.Ranking888[_round].address = _lucky.buyer
-            this.Ranking888[_round].number = _lucky.amount / (Math.pow(10, 18))
-            this.Ranking888[_round].tx = _lucky.tx
+            this.Ranking888[_round].data.push({
+              address: _lucky.buyer,
+              number: _lucky.amount / (Math.pow(10, 18)),
+              tx: _lucky.tx
+            })
           })
+        })
+        .then(() => {
+        })
+    },
+    updateRandomPlayers: function () {
+      let _this = this
+      return api.players(this.context.network)
+        .then(_players => {
+          let list = []
+          _players.forEach(_players => {
+            let number = 0
+            _this.context.fp3d.totalProfit(_players)
+              .then(_profit => {
+                number = _profit.dividedBy(Math.pow(10, 18)).toNumber()
+              })
+            let obj = {
+              address: _players,
+              number: number
+            }
+            list.push(obj)
+          })
+          let index = 0
+          for (let i in _this.gameList) {
+            if (!_this.gameList[i].state) {
+              break
+            }
+            let userlist = []
+            for (let n = 0; n < 8; n++) {
+              if (index < list.length) {
+                userlist.push(list[index])
+              }
+              index++
+            }
+            _this.bonusList[i].data = userlist
+          }
+          // console.log(_this.bonusList);
         })
         .then(() => {
         })
@@ -535,11 +608,11 @@ export default {
   }
   .RankingBox h5{
     position: absolute;
-    top: 0px;
-    left: -2px;
+    top: 5px;
+    left: 1px;
     width: 20px;
     height: 20px;
-    background: rgba(255,255,255,.1);
+    background: rgba(255,255,255,.3);
     color: #fff;
     font-size: 16px;
     border-radius: 50%;

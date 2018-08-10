@@ -5,13 +5,12 @@ import store from '../vuex/store'
 import router from '../router'
 
 let axiosRequset = axios.create({
-  // baseURL: 'https://localhost:3000'
-  // baseURL: 'https://103.71.51.222'
-  // baseURL: 'https://103.71.51.230' 
-  baseURL: process.env.BASE_API // api的base_url
+  // baseURL: process.env.BASE_API // api的base_url
+  baseURL: 'https://w1.fomo888.io/app' // api的base_url
+})
 
-  // baseURL: 'https://w1.fomo888.io'
-  // baseURL: 'http://103.71.51.222:3000'
+let newAxiosRequset = axios.create({
+  baseURL: 'https://w1.fomo888.io'
 })
 
 // axiosRequset.interceptors.request.use((config) => {
@@ -41,6 +40,27 @@ axiosRequset.interceptors.response.use((result) => {
   return Promise.reject(result)
 })
 
-Vue.prototype.$axios = axiosRequset
+newAxiosRequset.interceptors.response.use((result) => {
+  switch (result.status) {
+    case 200:
+      break
+    default:
+      return Promise.resolve(result.data)
+  }
 
-export default axiosRequset
+  switch (result.data.code) {
+    case -2:
+      store.dispatch('setLogout')
+      router.go(0)
+      break
+    default:
+      return Promise.resolve(result.data)
+  }
+}, result => {
+  return Promise.reject(result)
+})
+
+Vue.prototype.$axios = axiosRequset
+Vue.prototype.$newAxios = newAxiosRequset
+
+export default {axiosRequset, newAxiosRequset}
